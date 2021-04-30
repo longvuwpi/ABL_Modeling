@@ -1,7 +1,7 @@
 package abl.generated;
 // the package corresponds to where generated Java files are placed.
 
-import abl.wmes.ChaserWME;
+import abl.wmes.CreepWME;
 import abl.wmes.PlayerWME;
 import abl.actions.*;
 import abl.sensors.*;
@@ -22,11 +22,13 @@ behaving_entity ChaserAgent {
 	 * The prototype parameters correspond to the types expected by the execute(object[]) method 
 	 * in the action's Java class.
 	 */
-	register act moveUp() with MoveUp;
-	register act moveDown() with MoveDown; 
-	register act moveLeft() with MoveLeft;
-	register act moveRight() with MoveRight;
-	register act stop() with Stop;
+	register act moveUp(int) with MoveUp;
+	register act moveDown(int) with MoveDown; 
+	register act moveLeft(int) with MoveLeft;
+	register act moveRight(int) with MoveRight;
+	register act stop(int) with Stop;
+        register act stopHorizontal(int) with StopHorizontal;
+        register act stopVertical(int) with StopVertical;
 	register act fire(int, int) with Fire;
 
 	/**
@@ -34,7 +36,7 @@ behaving_entity ChaserAgent {
 	 * that it is responsible for managing and the Java sensor class that implements the functionality. 
 	 */
     register wme PlayerWME with PlayerSensor;
-    register wme ChaserWME with ChaserSensor;
+    register wme CreepWME with CreepSensor;
 
 	/**
 	 * Defines a variable scope to the agent, which can be used and modified in behaviors. 
@@ -50,7 +52,7 @@ behaving_entity ChaserAgent {
 	/**
 	 * After an initial delay, continuously fire bullets. 
 	 */
-	sequential behavior manageFiring() {
+	atomic sequential behavior manageFiring() {
 		//subgoal Wait(2000);					// this suspends the execution of the behavior
 
 
@@ -70,27 +72,106 @@ behaving_entity ChaserAgent {
 
                 precondition {
                     (PlayerWME isInRangeOfCreep::creepInRange)
+                    (PlayerWME creep_object_id::creepID)
+                    (PlayerWME player_object_id::playerID)
                     (creepInRange == true) 
                 }
+
+                specificity 1;
 
 		mental_act {
 			System.out.println("Firing");
 		}
 
-		act fire(0,1);	
+		act fire(playerID,creepID);	
 		//subgoal Wait(500);
 	}
 
+        sequential behavior fire() {
+                precondition {
+                    (PlayerWME isInRangeOfCreep::creepInRange)
+                    (creepInRange == false) 
+                }
+                specificity 2;
+
+                mental_act {
+                    System.out.println("Creep not in range, not firing");
+                }
+        }
+
+        sequential behavior fire() {
+                precondition {
+                    (PlayerWME creep_exists::creepExists)
+                    (creepExists == false) 
+                }
+                specificity 2;
+
+                mental_act {
+                    System.out.println("Creep does not exist, not firing");
+                }
+        }
+
+
+        sequential behavior creep_fire() {
+            precondition {
+                (CreepWME is_dead::creep_dead)
+                (CreepWME is_aggroed::creep_aggroed)
+                (creep_dead == false)
+                (creep_aggroed == false)
+            }
+            
+		mental_act {
+			System.out.println("Creep idle");
+		}
+
+            //specificity 3;
+
+        }
+
+        sequential behavior creep_fire() {
+            precondition {
+                (CreepWME is_dead::creep_dead)
+                (creep_dead == true)
+            }
+            
+		mental_act {
+			System.out.println("Creep dead, not firing anymore");
+		}
+
+            //specificity 3;
+
+            fail_step;
+        }
+
+        sequential behavior creep_fire() {
+            precondition {
+                (CreepWME is_aggroed::creep_aggroed)
+                (CreepWME creep_object_id::creepid)
+                (CreepWME attacker_object_id::attackerid)
+                (creep_aggroed == true)
+            }
+           // specificity 2;
+
+		mental_act {
+			System.out.println("Creep aggroed, firing");
+		}
+
+            act fire(creepid,attackerid);
+
+        }
 	/**
 	 * Continuously move towards the player character.
 	 */
-	sequential behavior manageMovement() {
+	atomic sequential behavior manageMovement() {
 		with (persistent) subgoal move();
 	}
 
 	sequential behavior move() {
 		precondition {
                         (PlayerWME isInRangeOfCreep::creepInRange)
+                    (PlayerWME creep_exists::creepExists)
+                    (PlayerWME player_object_id::playerID)
+                    (creepExists == true) 
                         (creepInRange == true) 
 		}
 		specificity 3;
@@ -99,7 +180,62 @@ behaving_entity ChaserAgent {
 			System.out.println("Stopping");
 		}
  
-		act stop();
+		act stop(playerID);
+	}
+
+        sequential behavior move() {
+                precondition {
+                    (PlayerWME creep_exists::creepExists)
+                    (PlayerWME player_object_id::playerID)
+                    (creepExists == false) 
+                }
+                specificity 3;
+
+                mental_act {
+                    System.out.println("Creep does not exist, not moving");
+                }
+
+                act stop(playerID);
+        }
+
+	sequential behavior move() {
+		precondition {
+			(PlayerWME player_location_y::playerY)
+                        (PlayerWME player_trajectory_dy::playerDy)
+                        (PlayerWME player_object_id::playerID)
+			(PlayerWME creep_location_y::creepY)
+                        (PlayerWME isInRangeOfCreep::creepInRange)
+                        (creepInRange == false) 
+			(creepY > (playerY - playerDy))
+                        (creepY < (playerY + playerDy))
+		}
+		specificity 3;
+		
+		mental_act {
+			System.out.println("stop vertical");
+		}
+ 
+		act stopVertical(playerID);
+	}
+
+	sequential behavior move() {
+		precondition {
+			(PlayerWME player_location_x::playerX)
+                        (PlayerWME player_trajectory_dx::playerDx)
+                        (PlayerWME player_object_id::playerID)
+			(PlayerWME creep_location_x::creepX) 
+                        (PlayerWME isInRangeOfCreep::creepInRange)
+                        (creepInRange == false)
+			(creepX > (playerX - playerDx))
+                        (creepX < (playerX + playerDx))
+		}
+		specificity 3;
+		
+		mental_act {
+			System.out.println("stop horizontal");
+		}
+
+		act stopHorizontal(playerID);
 	}
 
 	/**
@@ -111,11 +247,13 @@ behaving_entity ChaserAgent {
 	 */ 
 	sequential behavior move() {
 		precondition {
-			(PlayerWME locationY::playerY)
-			(ChaserWME locationY::chaserY)
+			(PlayerWME player_location_y::playerY)
+                        (PlayerWME player_trajectory_dy::playerDy)
+                        (PlayerWME player_object_id::playerID)
+			(PlayerWME creep_location_y::creepY)
                         (PlayerWME isInRangeOfCreep::creepInRange)
                         (creepInRange == false) 
-			(chaserY < playerY)
+			(creepY <= (playerY - playerDy))
 		}
 		specificity 2;
 		
@@ -123,7 +261,7 @@ behaving_entity ChaserAgent {
 			System.out.println("Moving up");
 		}
  
-		act moveUp();
+		act moveUp(playerID);
 	}
  	
 	/**
@@ -131,11 +269,13 @@ behaving_entity ChaserAgent {
 	 */
 	sequential behavior move() {
 		precondition {
-			(PlayerWME locationY::playerY)
-			(ChaserWME locationY::chaserY) 
+			(PlayerWME player_location_y::playerY)
+                        (PlayerWME player_trajectory_dy::playerDy)
+                        (PlayerWME player_object_id::playerID)
+			(PlayerWME creep_location_y::creepY)
                         (PlayerWME isInRangeOfCreep::creepInRange)
                         (creepInRange == false)
-			(chaserY > playerY)
+			(creepY >= (playerY + playerDy))
 		}
 		specificity 2;
 		
@@ -143,7 +283,7 @@ behaving_entity ChaserAgent {
 			System.out.println("Moving down");
 		}
 
-		act moveDown();
+		act moveDown(playerID);
 	}
  	 
 	/**
@@ -151,11 +291,13 @@ behaving_entity ChaserAgent {
 	 */
 	sequential behavior move() {
 		precondition {
-			(PlayerWME locationX::playerX)
-			(ChaserWME locationX::chaserX) 
+			(PlayerWME player_location_x::playerX)
+                        (PlayerWME player_trajectory_dx::playerDx)
+                        (PlayerWME player_object_id::playerID)
+			(PlayerWME creep_location_x::creepX) 
                         (PlayerWME isInRangeOfCreep::creepInRange)
                         (creepInRange == false)
-			(chaserX < playerX)
+			(creepX <= (playerX - playerDx))
 		}
 		specificity 2;
 		
@@ -163,7 +305,7 @@ behaving_entity ChaserAgent {
 			System.out.println("Moving left");
 		}
 
-		act moveLeft();
+		act moveLeft(playerID);
 	}
 
 	/**
@@ -171,11 +313,13 @@ behaving_entity ChaserAgent {
 	 */
 	sequential behavior move() {
 		precondition { 
-			(PlayerWME locationX::playerX)
-			(ChaserWME locationX::chaserX) 
+			(PlayerWME player_location_x::playerX)
+                        (PlayerWME player_trajectory_dx::playerDx)
+                        (PlayerWME player_object_id::playerID)
+			(PlayerWME creep_location_x::creepX) 
                         (PlayerWME isInRangeOfCreep::creepInRange)
                         (creepInRange == false)
-			(chaserX > playerX)
+			(creepX >= (playerX + playerDx))
 		}
 		specificity 2;
 		
@@ -183,7 +327,7 @@ behaving_entity ChaserAgent {
 			System.out.println("Moving right");
 		}
 
-		act moveRight();
+		act moveRight(playerID);
 	}
 	
 	/**
@@ -193,7 +337,7 @@ behaving_entity ChaserAgent {
 	 * Since it is evaluated last, it is only reached if none of the other behaviors can be activited,
 	 * which means the player and chaser are overlapping. This is why there are no preconditions. 
 	 */
-	sequential behavior move() {
+	/*sequential behavior move() {
 		specificity 1;
 		
 		mental_act {
@@ -201,79 +345,8 @@ behaving_entity ChaserAgent {
 		}
 		
 		act stop();
-	}
-	
-	sequential behavior manage_attention_fire() {
-		with (persistent) subgoal attention_fire(); // problem with persistent
-	}
-	
-	
-	sequential behavior attention_fire() {
-		precondition {
-			(PlayerWME isInBaitLocation::targetBaitLocation)
-			(ChaserWME isInBaitLocation::chaserBaitLocation)
-			(targetBaitLocation == true)
-			(chaserBaitLocation == true)
-			//(distance > threshold_distance)
-		}
-		
-		//specificity 1;
-		
-		mental_act {
-			System.out.println("in att_fire");
-			System.out.println(targetBaitLocation);
-			System.out.println(chaserBaitLocation);
-		}
-		
-		subgoal Wait(3000);
-		subgoal fire();
-	}
-	
-	/*moves within the range of the Target to become bait*/
-	
-	sequential behavior manage_move_within_range() {
-		with (persistent) subgoal move_within_range();
-	}
-	
-	sequential behavior move_within_range() {
-		precondition {
-			(PlayerWME isInBaitLocation::targetBaitLocation)
-			(PlayerWME targetPoint::tPoint)
-			(targetBaitLocation == true)
-		}
-		
-		specificity 2;
-		
-		mental_act { 
-			targetDestPoint = new Point(tPoint);
-			//System.out.println("in true move_witin_range");
-			//System.out.println(""+playerX); 
-		}
-		
-		subgoal move();
-	}
-	
-	sequential behavior move_within_range() {
-		precondition {
-			(PlayerWME isInBaitLocation::targetBaitLocation)
-			(PlayerWME targetPoint::tPoint)
-			(targetBaitLocation == false)
-		}
-		context_condition {
-			(PlayerWME isInBaitLocation::targetBaitLocation)
-			(targetBaitLocation == false) 
-		}
-			
-		specificity 1;
-		
-		mental_act{ 
-			targetDestPoint = new Point(tPoint);
-			//System.out.println("in false move_witin_range");
-			//System.out.println(""+playerX); 
-		}
-		
-		subgoal move();	
-	}
+	}*/
+
 	
 
     /**
@@ -292,9 +365,20 @@ behaving_entity ChaserAgent {
 	    with ( success_test { (System.currentTimeMillis() > finish) } ) wait;
 	}
  
-        parallel behavior beginAction() {
+        parallel behavior player_behavior() {
+            subgoal manageFiring();
+            subgoal manageMovement();
+        }
+
+        atomic sequential behavior creep_behavior() {
+             with (persistent when_succeeds) subgoal creep_fire();
+        }
+
+        sequential behavior beginAction() {
             subgoal fire();
             subgoal move();
+            subgoal creep_fire();
+
         }
     /** 
      * Root of the active behavior tree.
@@ -308,6 +392,7 @@ behaving_entity ChaserAgent {
 			System.out.println("Starting Chaser Agent");
     	}
 
+        //subgoal beginAction();
         with (persistent) subgoal beginAction();
     }
 }

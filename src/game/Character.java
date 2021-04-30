@@ -31,6 +31,7 @@ public class Character extends GameObject{
         private int countdown_attack = 0;
         
         int health = 0;
+        int max_health = 0;
         int damage = 0;
         
 	/** bullet speed */
@@ -43,6 +44,7 @@ public class Character extends GameObject{
             if (new_character_type == CharacterType.CREEP) {
                 setColor(Color.PINK);
                 health = Constants_singleton.getInstance().creep_health;
+                max_health = health;
                 damage = Constants_singleton.getInstance().creep_damage;
                 gold_bounty = Constants_singleton.getInstance().creep_gold_bounty;
                 setSize_width(Constants_singleton.getInstance().creep_width);
@@ -50,6 +52,7 @@ public class Character extends GameObject{
             } else {
                 setColor(Color.DARK_GRAY);
                 health = Constants_singleton.getInstance().hero_health;
+                max_health = health;
                 damage = Constants_singleton.getInstance().hero_damage;
                 setSize_width(Constants_singleton.getInstance().hero_width);
                 setSize_height(Constants_singleton.getInstance().hero_height);

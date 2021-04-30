@@ -111,7 +111,7 @@ public class ChaserAgent_StepFactories {
          }
          case 21: {
             // move_6Step2
-            return new PrimitiveStep(21, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$argumentExecute0_rfield, null, null, null, new MoveToBase(), null, "moveDown");
+            return new PrimitiveStep(21, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$argumentExecute0_rfield, null, null, null, new MoveDown(), null, "moveDown");
          }
          case 22: {
             // move_7Step1

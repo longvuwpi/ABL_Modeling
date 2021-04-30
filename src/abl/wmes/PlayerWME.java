@@ -101,6 +101,10 @@ public class PlayerWME extends WME {
         return creep_object_id;
     }
 
+    public boolean getIsPlayerHealthy() {
+        Character player = (Character) Chaser.getInstance().get_game_object_with_id(player_object_id);
+        return (player.getHealth() >= player.)
+    }
     public boolean getIsInRangeOfCreep() {
         if (Chaser.getInstance().getListOfCreeps().isEmpty()) {
             return false;

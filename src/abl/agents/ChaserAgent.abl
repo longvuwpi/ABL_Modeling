@@ -30,6 +30,8 @@ behaving_entity ChaserAgent {
         register act stopHorizontal(int) with StopHorizontal;
         register act stopVertical(int) with StopVertical;
 	register act fire(int, int) with Fire;
+        register act moveToDestination(int,int) with MoveToDestination;
+        register act moveToDestination(int,int,int) with MoveToDestination;
 
 	/**
 	 * Define the sensors that add game state to working memory. Each sensor defines the name of the WME class
@@ -166,6 +168,19 @@ behaving_entity ChaserAgent {
 		with (persistent) subgoal move();
 	}
 
+        sequential behavior move() {
+            precondition {
+                (PlayerWME isPlayerHealthy::isHealthy)
+                (PlayerWME player_object_id::playerID)
+                (PlayerWME base_object_id::baseID)
+                (isHealthy == false)
+            }
+
+            specificity 4;
+
+            act moveToDestination(playerID,baseID);
+
+        }
 	sequential behavior move() {
 		precondition {
                         (PlayerWME isInRangeOfCreep::creepInRange)
