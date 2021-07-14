@@ -50,6 +50,8 @@ public class Bullet extends GameObject {
             } else {
                 idle = true;
             }
+        } else {
+            remove_from_world();
         }
     }
 

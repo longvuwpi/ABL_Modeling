@@ -46,7 +46,7 @@ public class PlayerWME extends WME {
 //		Point dimensions = new Point(width, height);
 //		this.targetPoint = new Point((int)(dimensions.x*Math.random()), (int)(dimensions.y*Math.random()));
         //targetPoint = new Point(400,400);
-        player_object_id = Constants_singleton.hero_object_id;
+        player_object_id = Chaser.getInstance().getListOfPlayers().get(0).getGame_object_id();
         updateAndStore();
     }
 
@@ -106,15 +106,16 @@ public class PlayerWME extends WME {
             return false;
         }
 
-        Character player = Chaser.getInstance().getListOfPlayers().get(0);
-        Character creep = Chaser.getInstance().getListOfCreeps().get(0);
+        Player player = Chaser.getInstance().getListOfPlayers().get(0);
+        NeutralCreep creep = (NeutralCreep) Chaser.getInstance().get_game_object_with_id(creep_object_id);
 
+        while (creep == null) updateAndStore();
         double distance = sqrt(pow(player.getX() - creep.getX(), 2) + pow(player.getY() - creep.getY(), 2));
         boolean result = distance <= Constants_singleton.getInstance().hero_atk_range;
         if (result) {
-            System.out.println(distance + "is in range");
+            //System.out.println(distance + "is in range");
         } else {
-            System.out.println(distance + "Is not in range");
+            //System.out.println(distance + "Is not in range");
         }
         return result;
     }
@@ -128,8 +129,27 @@ public class PlayerWME extends WME {
         player_trajectory_dy = (int) player.getDy();
 
         if (!Chaser.getInstance().getListOfCreeps().isEmpty()) {
-            Character creep = Chaser.getInstance().getListOfCreeps().get(0);
-
+            NeutralCreep creep = Chaser.getInstance().getListOfCreeps().get(0);
+            ArrayList<NeutralCreepCamp> camps = Chaser.getInstance().getListOfCamps();
+            
+            double min_distance = Integer.MAX_VALUE;
+            NeutralCreepCamp closest_camp = creep.getCamp();
+            
+            for (NeutralCreepCamp camp : camps)
+            {
+                if (!camp.getHas_alive_creeps()) {
+                    continue;
+                }
+                double distance = sqrt(pow(player.getX() - camp.getX(), 2) + pow(player.getY() - camp.getY(), 2));
+                if (distance <= min_distance) {
+                    min_distance = distance;
+                    closest_camp = camp;
+                }
+            
+            }
+            
+            creep = closest_camp.getCreeps().get(0);
+            
             creep_location_x = creep.getX();
             creep_location_y = creep.getY();
             creep_exists = true;

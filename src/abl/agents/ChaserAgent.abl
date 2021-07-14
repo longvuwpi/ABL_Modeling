@@ -30,6 +30,7 @@ behaving_entity ChaserAgent {
         register act stopHorizontal(int) with StopHorizontal;
         register act stopVertical(int) with StopVertical;
 	register act fire(int, int) with Fire;
+        register act creep_aggro() with CreepAggro;
 
 	/**
 	 * Define the sensors that add game state to working memory. Each sensor defines the name of the WME class
@@ -114,9 +115,7 @@ behaving_entity ChaserAgent {
 
         sequential behavior creep_fire() {
             precondition {
-                (CreepWME is_dead::creep_dead)
                 (CreepWME is_aggroed::creep_aggroed)
-                (creep_dead == false)
                 (creep_aggroed == false)
             }
             
@@ -130,24 +129,7 @@ behaving_entity ChaserAgent {
 
         sequential behavior creep_fire() {
             precondition {
-                (CreepWME is_dead::creep_dead)
-                (creep_dead == true)
-            }
-            
-		mental_act {
-			System.out.println("Creep dead, not firing anymore");
-		}
-
-            //specificity 3;
-
-            fail_step;
-        }
-
-        sequential behavior creep_fire() {
-            precondition {
                 (CreepWME is_aggroed::creep_aggroed)
-                (CreepWME creep_object_id::creepid)
-                (CreepWME attacker_object_id::attackerid)
                 (creep_aggroed == true)
             }
            // specificity 2;
@@ -156,9 +138,9 @@ behaving_entity ChaserAgent {
 			System.out.println("Creep aggroed, firing");
 		}
 
-            act fire(creepid,attackerid);
-
+            act creep_aggro();
         }
+
 	/**
 	 * Continuously move towards the player character.
 	 */

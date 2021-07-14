@@ -17,9 +17,6 @@ enum CharacterType {
 }
 
 public class Character extends GameObject{
-        private CharacterType character_type;
-        private int gold = 0;
-        private int gold_bounty = 0;
         
         private boolean is_taking_dmg;
         private Character aggro_unit = null;
@@ -31,33 +28,17 @@ public class Character extends GameObject{
         private int countdown_attack = 0;
         
         int health = 0;
+        int max_health = 0;
         int damage = 0;
         
 	/** bullet speed */
 	/**
 	 * Creates a bullet that will move towards the target location. 
 	 */
-	public Character(double width, double height,double location_x, double location_y, CharacterType new_character_type) {
+	public Character(double width, double height,double location_x, double location_y) {
             super(width, height, location_x,location_y,0,0,0,true, Color.BLACK);
-            character_type = new_character_type;
-            if (new_character_type == CharacterType.CREEP) {
-                setColor(Color.PINK);
-                health = Constants_singleton.getInstance().creep_health;
-                damage = Constants_singleton.getInstance().creep_damage;
-                gold_bounty = Constants_singleton.getInstance().creep_gold_bounty;
-                setSize_width(Constants_singleton.getInstance().creep_width);
-                setSize_height(Constants_singleton.getInstance().creep_height);
-            } else {
-                setColor(Color.DARK_GRAY);
-                health = Constants_singleton.getInstance().hero_health;
-                damage = Constants_singleton.getInstance().hero_damage;
-                setSize_width(Constants_singleton.getInstance().hero_width);
-                setSize_height(Constants_singleton.getInstance().hero_height);
-                gold = 100;
-                setIdle(false);
-            }
+            //character_type = new_character_type;
            
-            add_to_world();
 	}
         
         @Override
@@ -85,14 +66,7 @@ public class Character extends GameObject{
             g.setColor(Color.BLACK);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
             g.drawString(health_todraw, (int)getX(), (int)getY());
-            if (character_type == CharacterType.PLAYER) {
-                g.setColor(Color.BLACK);
-                g.fillRect(25,20, 175, 50);
-                g.setColor(Color.orange);
-                String gold_todraw = "GOLD: " + Integer.toString(gold);
-                g.setFont(new Font("TimesRoman", Font.PLAIN, 25)); 
-                g.drawString(gold_todraw, 50,50);
-            }
+
         }
         
             public int getHealth() {
@@ -109,10 +83,6 @@ public class Character extends GameObject{
 
     public void setDamage(int damage) {
         this.damage = damage;
-    }
-
-    public CharacterType getCharacter_type() {
-        return character_type;
     }
     
     public void NormalAttackAtTarget(Character target){
@@ -135,25 +105,26 @@ public class Character extends GameObject{
             aggro_unit = damage_dealer;
         }
         
-        ///if (character_type == CharacterType.CREEP) {
+        //if (character_type == CharacterType.CREEP) {
         //    setDx(0);
-         //   setDy(3);
+        //    setDy(3);
         //}
         
         setIdle(false);
         if (health <= 0) {
-            if (damage_dealer.character_type == CharacterType.PLAYER) {
-                damage_dealer.EarnGold(gold_bounty);
-            }
-            remove_from_world();
+            die();
         }
     }
 
+    public void die() {
+                    remove_from_world();
+    }
+    
     public Character getAggro_unit() {
         return aggro_unit;
     }
     
-    public void EarnGold(int gold_amount) {
-        gold += gold_amount;
+    public void setAggro_unit(Character unit) {
+        aggro_unit = unit;
     }
 }

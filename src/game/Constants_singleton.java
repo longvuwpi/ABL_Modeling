@@ -10,8 +10,8 @@ public class Constants_singleton {
         public static int creep_object_id = 3;
 	public static final int offset = 20;
 	
-	public static int width = 1280;
-	public static int height = 720;
+	public static int width = 1920;
+	public static int height = 1080;
 	
 	public static int laneStart_x = 150;
 	public static int laneStart_y = 300;
@@ -30,14 +30,14 @@ public class Constants_singleton {
         public static int hero_width = 50;
         public static int hero_height = 50;
         public static int hero_health = 600;
-        public static int hero_damage = 70;
+        public static int hero_damage = 80;
         public static int hero_atk_range = 250;
         public static int hero_move_speed = 4;
         
         public static int creep_width = 30;
         public static int creep_height = 30;
-        public static int creep_health = 500;
-        public static int creep_damage = 20;
+        public static int creep_health = 250;
+        public static int creep_damage = 8;
         public static int creep_gold_bounty = 50;
         
         public static int ancientcreep_width = 25;

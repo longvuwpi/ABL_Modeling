@@ -267,21 +267,20 @@ public class ChaserAgent extends BehavingEntity {
       behaviorLibrary.registerBehavior(new __BehaviorDesc(3, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "fire()", new String[] {"fire()"}, null, (short)2));
       behaviorLibrary.registerBehavior(new __BehaviorDesc(4, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "creep_fire()", new String[] {"creep_fire()"}, null, (short)0));
       behaviorLibrary.registerBehavior(new __BehaviorDesc(5, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "creep_fire()", new String[] {"creep_fire()"}, null, (short)0));
-      behaviorLibrary.registerBehavior(new __BehaviorDesc(6, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "creep_fire()", new String[] {"creep_fire()"}, null, (short)0));
-      behaviorLibrary.registerBehavior(new __BehaviorDesc(7, __$behaviorFactory0_rfield, null, null, "manageMovement()", new String[] {"manageMovement()"}, null, (short)0));
+      behaviorLibrary.registerBehavior(new __BehaviorDesc(6, __$behaviorFactory0_rfield, null, null, "manageMovement()", new String[] {"manageMovement()"}, null, (short)0));
+      behaviorLibrary.registerBehavior(new __BehaviorDesc(7, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)3));
       behaviorLibrary.registerBehavior(new __BehaviorDesc(8, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)3));
       behaviorLibrary.registerBehavior(new __BehaviorDesc(9, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)3));
       behaviorLibrary.registerBehavior(new __BehaviorDesc(10, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)3));
-      behaviorLibrary.registerBehavior(new __BehaviorDesc(11, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)3));
+      behaviorLibrary.registerBehavior(new __BehaviorDesc(11, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)2));
       behaviorLibrary.registerBehavior(new __BehaviorDesc(12, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)2));
       behaviorLibrary.registerBehavior(new __BehaviorDesc(13, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)2));
       behaviorLibrary.registerBehavior(new __BehaviorDesc(14, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)2));
-      behaviorLibrary.registerBehavior(new __BehaviorDesc(15, __$behaviorFactory0_rfield, __$precondition0_rfield, __$preconditionSensorFactory0_rfield, "move()", new String[] {"move()"}, null, (short)2));
-      behaviorLibrary.registerBehavior(new __BehaviorDesc(16, __$behaviorFactory0_rfield, null, null, "Wait(int)", new String[] {"Wait(int)"}, null, (short)0));
-      behaviorLibrary.registerBehavior(new __BehaviorDesc(17, __$behaviorFactory0_rfield, null, null, "player_behavior()", new String[] {"player_behavior()"}, null, (short)0));
-      behaviorLibrary.registerBehavior(new __BehaviorDesc(18, __$behaviorFactory0_rfield, null, null, "creep_behavior()", new String[] {"creep_behavior()"}, null, (short)0));
-      behaviorLibrary.registerBehavior(new __BehaviorDesc(19, __$behaviorFactory0_rfield, null, null, "beginAction()", new String[] {"beginAction()"}, null, (short)0));
-      behaviorLibrary.registerBehavior(new __BehaviorDesc(20, __$behaviorFactory0_rfield, null, null, "ChaserAgent_RootCollectionBehavior()", new String[] {"ChaserAgent_RootCollectionBehavior()"}, null, (short)0));
+      behaviorLibrary.registerBehavior(new __BehaviorDesc(15, __$behaviorFactory0_rfield, null, null, "Wait(int)", new String[] {"Wait(int)"}, null, (short)0));
+      behaviorLibrary.registerBehavior(new __BehaviorDesc(16, __$behaviorFactory0_rfield, null, null, "player_behavior()", new String[] {"player_behavior()"}, null, (short)0));
+      behaviorLibrary.registerBehavior(new __BehaviorDesc(17, __$behaviorFactory0_rfield, null, null, "creep_behavior()", new String[] {"creep_behavior()"}, null, (short)0));
+      behaviorLibrary.registerBehavior(new __BehaviorDesc(18, __$behaviorFactory0_rfield, null, null, "beginAction()", new String[] {"beginAction()"}, null, (short)0));
+      behaviorLibrary.registerBehavior(new __BehaviorDesc(19, __$behaviorFactory0_rfield, null, null, "ChaserAgent_RootCollectionBehavior()", new String[] {"ChaserAgent_RootCollectionBehavior()"}, null, (short)0));
    }
 
    private static void registerBehaviors_1(BehaviorLibrary behaviorLibrary) {
@@ -292,11 +291,11 @@ public class ChaserAgent extends BehavingEntity {
    }
 
    public ChaserAgent() {
-      individualBehaviorLibrary = new BehaviorLibrary(42);
+      individualBehaviorLibrary = new BehaviorLibrary(40);
       jointBehaviorLibrary = new BehaviorLibrary(0);
       registerBehaviors_0(individualBehaviorLibrary);
       registerBehaviors_1(jointBehaviorLibrary);
-      ABT = (CollectionBehavior)ChaserAgent_BehaviorFactories.behaviorFactory0(20, null, null, null, "ChaserAgent_RootCollectionBehavior()");
+      ABT = (CollectionBehavior)ChaserAgent_BehaviorFactories.behaviorFactory0(19, null, null, null, "ChaserAgent_RootCollectionBehavior()");
       startWMEReflection(ABT);
       ABT.initRootBehavior();
       registerEntity("ChaserAgent", this);

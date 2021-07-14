@@ -145,7 +145,6 @@ public class ChaserAgent_Preconditions {
          case 4: {
             // creep_fire_1
             boolean creep_aggroed;
-            boolean creep_dead;
                List wmeList0;
                ListIterator wmeIter0;
                wmeList0 = BehavingEntity.getBehavingEntity().lookupWME("CreepWME");
@@ -153,42 +152,17 @@ public class ChaserAgent_Preconditions {
                while(wmeIter0.hasNext()) {
                   CreepWME wme__0 = (CreepWME)wmeIter0.next();
                   if (
-                     BehavingEntity.constantTrue(creep_dead = wme__0.getIs_dead())
+                     BehavingEntity.constantTrue(creep_aggroed = wme__0.getIs_aggroed())
                   )
 
                   {
-                        List wmeList1;
-                        ListIterator wmeIter1;
-                        wmeList1 = BehavingEntity.getBehavingEntity().lookupWME("CreepWME");
-                        wmeIter1 = wmeList1.listIterator();
-                        while(wmeIter1.hasNext()) {
-                           CreepWME wme__1 = (CreepWME)wmeIter1.next();
-                           if (
-                              BehavingEntity.constantTrue(creep_aggroed = wme__1.getIs_aggroed())
-                           )
+                        if (
+                           creep_aggroed == false
+                        )
 
-                           {
-                                 if (
-                                    creep_dead == false
-                                 )
-
-                                 {
-                                       if (
-                                          creep_aggroed == false
-                                       )
-
-                                       {
-                                          __$variableTable.put("creep_aggroed", new Boolean(creep_aggroed));
-                                          __$variableTable.put("creep_dead", new Boolean(creep_dead));
-                                          return true;
-                                       }
-
-
-                                 }
-
-
-                           }
-
+                        {
+                           __$variableTable.put("creep_aggroed", new Boolean(creep_aggroed));
+                           return true;
                         }
 
 
@@ -201,40 +175,7 @@ public class ChaserAgent_Preconditions {
          }
          case 5: {
             // creep_fire_2
-            boolean creep_dead;
-               List wmeList0;
-               ListIterator wmeIter0;
-               wmeList0 = BehavingEntity.getBehavingEntity().lookupWME("CreepWME");
-               wmeIter0 = wmeList0.listIterator();
-               while(wmeIter0.hasNext()) {
-                  CreepWME wme__0 = (CreepWME)wmeIter0.next();
-                  if (
-                     BehavingEntity.constantTrue(creep_dead = wme__0.getIs_dead())
-                  )
-
-                  {
-                        if (
-                           creep_dead == true
-                        )
-
-                        {
-                           __$variableTable.put("creep_dead", new Boolean(creep_dead));
-                           return true;
-                        }
-
-
-                  }
-
-               }
-
-
-            return false;
-         }
-         case 6: {
-            // creep_fire_3
             boolean creep_aggroed;
-            int attackerid;
-            int creepid;
                List wmeList0;
                ListIterator wmeIter0;
                wmeList0 = BehavingEntity.getBehavingEntity().lookupWME("CreepWME");
@@ -246,47 +187,13 @@ public class ChaserAgent_Preconditions {
                   )
 
                   {
-                        List wmeList1;
-                        ListIterator wmeIter1;
-                        wmeList1 = BehavingEntity.getBehavingEntity().lookupWME("CreepWME");
-                        wmeIter1 = wmeList1.listIterator();
-                        while(wmeIter1.hasNext()) {
-                           CreepWME wme__1 = (CreepWME)wmeIter1.next();
-                           if (
-                              BehavingEntity.constantTrue(creepid = wme__1.getCreep_object_id())
-                           )
+                        if (
+                           creep_aggroed == true
+                        )
 
-                           {
-                                 List wmeList2;
-                                 ListIterator wmeIter2;
-                                 wmeList2 = BehavingEntity.getBehavingEntity().lookupWME("CreepWME");
-                                 wmeIter2 = wmeList2.listIterator();
-                                 while(wmeIter2.hasNext()) {
-                                    CreepWME wme__2 = (CreepWME)wmeIter2.next();
-                                    if (
-                                       BehavingEntity.constantTrue(attackerid = wme__2.getAttacker_object_id())
-                                    )
-
-                                    {
-                                          if (
-                                             creep_aggroed == true
-                                          )
-
-                                          {
-                                             __$variableTable.put("creep_aggroed", new Boolean(creep_aggroed));
-                                             __$variableTable.put("creepid", new Integer(creepid));
-                                             __$variableTable.put("attackerid", new Integer(attackerid));
-                                             return true;
-                                          }
-
-
-                                    }
-
-                                 }
-
-
-                           }
-
+                        {
+                           __$variableTable.put("creep_aggroed", new Boolean(creep_aggroed));
+                           return true;
                         }
 
 
@@ -297,7 +204,7 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 8: {
+         case 7: {
             // move_1
             boolean creepExists;
             int playerID;
@@ -372,7 +279,7 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 9: {
+         case 8: {
             // move_2
             boolean creepExists;
             int playerID;
@@ -421,7 +328,7 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 10: {
+         case 9: {
             // move_3
             int playerDy;
             int creepY;
@@ -540,7 +447,7 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 11: {
+         case 10: {
             // move_4
             int playerX;
             int playerDx;
@@ -659,7 +566,7 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 12: {
+         case 11: {
             // move_5
             int playerDy;
             int creepY;
@@ -770,7 +677,7 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 13: {
+         case 12: {
             // move_6
             int playerDy;
             int creepY;
@@ -881,7 +788,7 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 14: {
+         case 13: {
             // move_7
             int playerX;
             int playerDx;
@@ -992,7 +899,7 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 15: {
+         case 14: {
             // move_8
             int playerX;
             int playerDx;

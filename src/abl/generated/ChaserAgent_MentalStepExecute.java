@@ -35,60 +35,55 @@ public class ChaserAgent_MentalStepExecute {
          }
          case 6: {
             // creep_fire_2Step1
-            System.out.println("Creep dead, not firing anymore");
-            break;
-         }
-         case 7: {
-            // creep_fire_3Step1
             System.out.println("Creep aggroed, firing");
             break;
          }
-         case 10: {
+         case 9: {
             // move_1Step1
             System.out.println("Stopping");
             break;
          }
-         case 12: {
+         case 11: {
             // move_2Step1
             System.out.println("Creep does not exist, not moving");
             break;
          }
-         case 14: {
+         case 13: {
             // move_3Step1
             System.out.println("stop vertical");
             break;
          }
-         case 16: {
+         case 15: {
             // move_4Step1
             System.out.println("stop horizontal");
             break;
          }
-         case 18: {
+         case 17: {
             // move_5Step1
             System.out.println("Moving up");
             break;
          }
-         case 20: {
+         case 19: {
             // move_6Step1
             System.out.println("Moving down");
             break;
          }
-         case 22: {
+         case 21: {
             // move_7Step1
             System.out.println("Moving left");
             break;
          }
-         case 24: {
+         case 23: {
             // move_8Step1
             System.out.println("Moving right");
             break;
          }
-         case 26: {
+         case 25: {
             // Wait_1Step1
             ((__ValueTypes.LongVar)__$behaviorFrame[1]).l = System.currentTimeMillis() + ((__ValueTypes.IntVar)__$behaviorFrame[0]).i;
             break;
          }
-         case 34: {
+         case 33: {
             // ChaserAgent_RootCollectionBehaviorStep1
             System.out.println("Starting Chaser Agent");
             break;

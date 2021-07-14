@@ -24,6 +24,7 @@ public class Fire extends BaseAction {
             Character target = (Character)Chaser.getInstance().get_game_object_with_id((Integer)args[1]);
             if ((attacker == null) || (target == null)) return;
             attacker.NormalAttackAtTarget(target);
+            
 		//Chaser.getInstance().fireChaserBullet(
 		//		new Point((Integer)args[0], (Integer)args[1]), 
 		//		new Point((Integer)args[2], (Integer)args[3]));
