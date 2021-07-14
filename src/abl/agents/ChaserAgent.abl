@@ -22,13 +22,10 @@ behaving_entity ChaserAgent {
 	 * The prototype parameters correspond to the types expected by the execute(object[]) method 
 	 * in the action's Java class.
 	 */
-	register act moveUp(int) with MoveUp;
-	register act moveDown(int) with MoveDown; 
-	register act moveLeft(int) with MoveLeft;
-	register act moveRight(int) with MoveRight;
+
 	register act stop(int) with Stop;
-        register act stopHorizontal(int) with StopHorizontal;
-        register act stopVertical(int) with StopVertical;
+        register act move_to_point(int, double, double) with MoveToDestination;
+        register act move_to_object(int, int) with MoveToDestination;
 	register act fire(int, int) with Fire;
         register act creep_aggro() with CreepAggro;
 
@@ -150,185 +147,34 @@ behaving_entity ChaserAgent {
 
 	sequential behavior move() {
 		precondition {
-                        (PlayerWME isInRangeOfCreep::creepInRange)
+                    (PlayerWME isInRangeOfCreep::creepInRange)
                     (PlayerWME creep_exists::creepExists)
                     (PlayerWME player_object_id::playerID)
+                    (PlayerWME creep_object_id::creepID)
                     (creepExists == true) 
-                        (creepInRange == true) 
+                    (creepInRange == false)
 		}
 		specificity 3;
 		
 		mental_act {
-			System.out.println("Stopping");
+			System.out.println("Moving to creep");
 		}
  
-		act stop(playerID);
+		act move_to_object(playerID, creepID);
 	}
 
         sequential behavior move() {
-                precondition {
-                    (PlayerWME creep_exists::creepExists)
+
+		precondition {
                     (PlayerWME player_object_id::playerID)
-                    (creepExists == false) 
-                }
-                specificity 3;
+		}
 
                 mental_act {
-                    System.out.println("Creep does not exist, not moving");
+                    System.out.println("Creep does not exist or is already in range, not moving");
                 }
 
                 act stop(playerID);
         }
-
-	sequential behavior move() {
-		precondition {
-			(PlayerWME player_location_y::playerY)
-                        (PlayerWME player_trajectory_dy::playerDy)
-                        (PlayerWME player_object_id::playerID)
-			(PlayerWME creep_location_y::creepY)
-                        (PlayerWME isInRangeOfCreep::creepInRange)
-                        (creepInRange == false) 
-			(creepY > (playerY - playerDy))
-                        (creepY < (playerY + playerDy))
-		}
-		specificity 3;
-		
-		mental_act {
-			System.out.println("stop vertical");
-		}
- 
-		act stopVertical(playerID);
-	}
-
-	sequential behavior move() {
-		precondition {
-			(PlayerWME player_location_x::playerX)
-                        (PlayerWME player_trajectory_dx::playerDx)
-                        (PlayerWME player_object_id::playerID)
-			(PlayerWME creep_location_x::creepX) 
-                        (PlayerWME isInRangeOfCreep::creepInRange)
-                        (creepInRange == false)
-			(creepX > (playerX - playerDx))
-                        (creepX < (playerX + playerDx))
-		}
-		specificity 3;
-		
-		mental_act {
-			System.out.println("stop horizontal");
-		}
-
-		act stopHorizontal(playerID);
-	}
-
-	/**
-	 * Moves the chaser up if the player is above the chaser.
-	 * 
-	 * Note: The agent prefers vertical over horizonal movement, because the move up and move down behaviors have 
-	 * a higher specificity than the other move behaviors. Therefore, if the agent needs to be moved up or down,
-	 * they are chosen first. 
-	 */ 
-	sequential behavior move() {
-		precondition {
-			(PlayerWME player_location_y::playerY)
-                        (PlayerWME player_trajectory_dy::playerDy)
-                        (PlayerWME player_object_id::playerID)
-			(PlayerWME creep_location_y::creepY)
-                        (PlayerWME isInRangeOfCreep::creepInRange)
-                        (creepInRange == false) 
-			(creepY <= (playerY - playerDy))
-		}
-		specificity 2;
-		
-		mental_act {
-			System.out.println("Moving up");
-		}
- 
-		act moveUp(playerID);
-	}
- 	
-	/**
-	 * Moves the chaser down if the player is below the chaser.
-	 */
-	sequential behavior move() {
-		precondition {
-			(PlayerWME player_location_y::playerY)
-                        (PlayerWME player_trajectory_dy::playerDy)
-                        (PlayerWME player_object_id::playerID)
-			(PlayerWME creep_location_y::creepY)
-                        (PlayerWME isInRangeOfCreep::creepInRange)
-                        (creepInRange == false)
-			(creepY >= (playerY + playerDy))
-		}
-		specificity 2;
-		
-		mental_act {
-			System.out.println("Moving down");
-		}
-
-		act moveDown(playerID);
-	}
- 	 
-	/**
-	 * Moves the chaser left if the player to the left of the chaser.
-	 */
-	sequential behavior move() {
-		precondition {
-			(PlayerWME player_location_x::playerX)
-                        (PlayerWME player_trajectory_dx::playerDx)
-                        (PlayerWME player_object_id::playerID)
-			(PlayerWME creep_location_x::creepX) 
-                        (PlayerWME isInRangeOfCreep::creepInRange)
-                        (creepInRange == false)
-			(creepX <= (playerX - playerDx))
-		}
-		specificity 2;
-		
-		mental_act {
-			System.out.println("Moving left");
-		}
-
-		act moveLeft(playerID);
-	}
-
-	/**
-	 * Moves the chaser right if the player to the right of the chaser.
-	 */
-	sequential behavior move() {
-		precondition { 
-			(PlayerWME player_location_x::playerX)
-                        (PlayerWME player_trajectory_dx::playerDx)
-                        (PlayerWME player_object_id::playerID)
-			(PlayerWME creep_location_x::creepX) 
-                        (PlayerWME isInRangeOfCreep::creepInRange)
-                        (creepInRange == false)
-			(creepX >= (playerX + playerDx))
-		}
-		specificity 2;
-		
-		mental_act {
-			System.out.println("Moving right");
-		}
-
-		act moveRight(playerID);
-	}
-	
-	/**
-	 * Stops the chaser.
-	 *
-	 * Of the move behaviors, this is always evaluated last due to having the lowest specificity. 
-	 * Since it is evaluated last, it is only reached if none of the other behaviors can be activited,
-	 * which means the player and chaser are overlapping. This is why there are no preconditions. 
-	 */
-	/*sequential behavior move() {
-		specificity 1;
-		
-		mental_act {
-			//System.out.println("In stop");
-		}
-		
-		act stop();
-	}*/
-
 	
 
     /**

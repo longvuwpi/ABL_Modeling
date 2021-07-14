@@ -28,8 +28,8 @@ public class Bullet extends GameObject {
         owner = new_owner;
         target = new_target;
 
-        setX(new_owner.getX() + (new_owner.getSize_width() / 2));
-        setY(new_owner.getY() + (new_owner.getSize_height() / 2));
+        setX(new_owner.getX() + (new_owner.getSize_width() / 2.0));
+        setY(new_owner.getY() + (new_owner.getSize_height() / 2.0));
 
         updatePathing();
 

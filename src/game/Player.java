@@ -31,7 +31,7 @@ public class Player extends Character {
         damage = Constants_singleton.getInstance().hero_damage;
         gold = 100;
         setIdle(false);
-
+        setSpeed(Constants_singleton.hero_move_speed);
         add_to_world();
 
     }

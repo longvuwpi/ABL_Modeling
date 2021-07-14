@@ -6,8 +6,6 @@ public class Constants_singleton {
     
         private static int next_object_id = 0;
         
-        public static int hero_object_id = 2;
-        public static int creep_object_id = 3;
 	public static final int offset = 20;
 	
 	public static int width = 1920;
@@ -32,7 +30,7 @@ public class Constants_singleton {
         public static int hero_health = 600;
         public static int hero_damage = 80;
         public static int hero_atk_range = 250;
-        public static int hero_move_speed = 4;
+        public static double hero_move_speed = 5.5;
         
         public static int creep_width = 30;
         public static int creep_height = 30;

@@ -14,7 +14,7 @@ import wm.WME;
  *
  * @author Ben Weber 3-7-11
  */
-public class CreepWME extends WME implements game.Constants {
+public class CreepWME extends WME {
 
     private boolean is_aggroed;
 

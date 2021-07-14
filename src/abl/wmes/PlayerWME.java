@@ -26,14 +26,14 @@ public class PlayerWME extends WME {
 
     private int player_object_id;
 
-    private int player_location_x;
-    private int player_location_y;
-    private int player_trajectory_dx;
-    private int player_trajectory_dy;
+    private double player_location_x;
+    private double player_location_y;
+    private double player_trajectory_dx;
+    private double player_trajectory_dy;
 
     private int creep_object_id;
-    private int creep_location_x;
-    private int creep_location_y;
+    private double creep_location_x;
+    private double creep_location_y;
     private boolean creep_exists;
 
     /**
@@ -69,27 +69,27 @@ public class PlayerWME extends WME {
         return player_object_id;
     }
 
-    public int getPlayer_location_x() {
+    public double getPlayer_location_x() {
         return player_location_x;
     }
 
-    public int getPlayer_location_y() {
+    public double getPlayer_location_y() {
         return player_location_y;
     }
 
-    public int getPlayer_trajectory_dx() {
+    public double getPlayer_trajectory_dx() {
         return player_trajectory_dx;
     }
 
-    public int getPlayer_trajectory_dy() {
+    public double getPlayer_trajectory_dy() {
         return player_trajectory_dy;
     }
 
-    public int getCreep_location_x() {
+    public double getCreep_location_x() {
         return creep_location_x;
     }
 
-    public int getCreep_location_y() {
+    public double getCreep_location_y() {
         return creep_location_y;
     }
 

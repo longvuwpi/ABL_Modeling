@@ -3,6 +3,7 @@ package abl.actions;
 import game.Chaser;
 import game.Character;
 import game.Constants_singleton;
+import game.GameObject;
 import java.awt.Point;
 /**
  * Sets the trajectory of the chaser. 
@@ -16,13 +17,16 @@ public class MoveToDestination extends BaseAction {
 	 */
 	public void execute(Object[] args) {
             Character to_move = (Character)Chaser.getInstance().get_game_object_with_id((Integer)args[0]);
+            
             if (to_move == null) return;
             
             if (args.length == 2) {
-            to_move.setDy(Constants_singleton.hero_move_speed);
+                GameObject target = Chaser.getInstance().get_game_object_with_id((Integer)args[1]);
+                to_move.set_target(target);
             } else if (args.length == 3) {
-                
+                to_move.set_target((Double)args[1], (Double)args[2]);
             }
 //Chaser.getInstance().setPlayerTrajectory(new Point(0,Chaser.ChaserSpeed));
 	}
+        
 }

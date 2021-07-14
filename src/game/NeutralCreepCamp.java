@@ -31,7 +31,9 @@ public class NeutralCreepCamp extends GameObject {
         // This logic needs improvement because it only checks for the creeps that belongs to this camp.
         // if creeps from other camps or players get in the camp then it still does not spawn creeps.
         // creeps are only spawn when no player or no creep exists inside the camp.
-        if ((Chaser.getInstance().getElapsed_seconds() % 30) == 10) {
+        
+        // Right now it only checks for creeps, because the players are not walking inside the creep camps anyway
+        if ((Chaser.getInstance().getElapsed_seconds() % 30) == 3) {
             System.out.println("spawning creeps");
             boolean spawn = true;
         for (NeutralCreep creep : creeps) {
@@ -46,8 +48,8 @@ public class NeutralCreepCamp extends GameObject {
     }
     public void spawn_creep() {
         NeutralCreep creep1 = new NeutralCreep(this, getX(), getY());
-        NeutralCreep creep2 = new NeutralCreep(this, getX() - 5, getY() +50);
-        NeutralCreep creep3 = new NeutralCreep(this, getX() + 40, getY() + 30);
+        NeutralCreep creep2 = new NeutralCreep(this, getX() - 5.0, getY() +50.0);
+        NeutralCreep creep3 = new NeutralCreep(this, getX() + 40.0, getY() + 30.0);
         creeps.add(creep1);
         creeps.add(creep2);
         creeps.add(creep3);

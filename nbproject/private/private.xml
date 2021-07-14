@@ -11,11 +11,13 @@
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/abl/sensors/CreepSensor.java</file>
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/game/NeutralCreepCamp.java</file>
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/abl/actions/Stop.java</file>
-            <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/abl/actions/MoveDown.java</file>
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/game/Player.java</file>
+            <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/abl/actions/MoveToDestination.java</file>
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/abl/generated/ChaserAgent_Preconditions.java</file>
+            <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/abl/Compile.java</file>
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/game/Character.java</file>
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/game/Constants_singleton.java</file>
+            <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/game/GameObject.java</file>
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/abl/sensors/PlayerSensor.java</file>
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/abl/agents/ChaserAgent.abl</file>
             <file>file:/D:/Users/vuxua/Documents/NetBeansProjects/ABL_Modeling/src/game/Bullet.java</file>

@@ -109,15 +109,15 @@ public class GameObject {
     /**
      * Returns the x location of the bullet (in pixels).
      */
-    public int getX() {
-        return (int) x;
+    public double getX() {
+        return x;
     }
 
     /**
      * Returns the y location of the bullet (in pixels).
      */
-    public int getY() {
-        return (int) y;
+    public double getY() {
+        return y;
     }
 
     public void setX(double x) {
@@ -175,7 +175,7 @@ public class GameObject {
     }
 
     private void checkIdle() {
-        if ((dx == 0) && (dy == 0)) {
+        if ((dx == 0.0) && (dy == 0.0)) {
             idle = true;
         } else {
             idle = false;
@@ -188,6 +188,24 @@ public class GameObject {
 
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+    
+    public void set_target(double target_x, double target_y) {
+        double to_target_x = target_x - x;
+        double to_target_y = target_y - y;
+        double to_target_distance = Math.sqrt((to_target_x * to_target_x) + (to_target_y * to_target_y));
+        double ratio = speed / to_target_distance;
+        double newdx = ratio * to_target_x;
+        double newdy = ratio * to_target_y;
+
+        //System.out.print("New dx is " + Double.toString(newdx) + " and new dy is " + Double.toString(newdy));
+        setDx(newdx);
+        setDy(newdy);
+        
+    }
+    
+    public void set_target(GameObject target) {
+        set_target(target.getX() + (target.getSize_width() / 2), target.getY() + (target.getSize_height()/2));
     }
 
     public int getGame_object_id() {

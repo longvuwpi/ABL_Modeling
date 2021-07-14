@@ -66,7 +66,6 @@ public class Character extends GameObject{
             g.setColor(Color.BLACK);
             g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
             g.drawString(health_todraw, (int)getX(), (int)getY());
-
         }
         
             public int getHealth() {

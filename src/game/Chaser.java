@@ -335,7 +335,7 @@ public class Chaser extends JPanel implements KeyListener {
      */
     public Point getPlayerLocation() {
         //return playerLocation;
-        Point result = new Point(gameObjects.get(0).getX(), gameObjects.get(0).getY());
+        Point result = new Point((int)gameObjects.get(0).getX(), (int)gameObjects.get(0).getY());
         return result;
     }
 
@@ -346,15 +346,6 @@ public class Chaser extends JPanel implements KeyListener {
         Point result = new Point((int) gameObjects.get(0).getDx(), (int) gameObjects.get(0).getDy());
         return result;
         //return playerTrajectory;
-    }
-
-    /**
-     * Returns the location of the chaser.
-     */
-    public Point getChaserLocation() {
-        //return chaserLocation;
-        Point result = new Point(gameObjects.get(1).getX(), gameObjects.get(1).getY());
-        return result;
     }
 
     /**

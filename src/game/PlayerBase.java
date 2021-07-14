@@ -21,12 +21,12 @@ public class PlayerBase extends GameObject {
     }
     
     @Override
-    public int getX() {
-        return (int)(x + size_width/2);
+    public double getX() {
+        return (x + size_width/2);
     }
         
     @Override
-    public int getY() {
-        return (int)(y + size_height/2);
+    public double getY() {
+        return (y + size_height/2);
     }
 }
