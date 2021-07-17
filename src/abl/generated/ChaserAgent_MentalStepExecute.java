@@ -20,32 +20,24 @@ public class ChaserAgent_MentalStepExecute {
          }
          case 3: {
             // fire_2Step1
-            System.out.println("Creep not in range, not firing");
             break;
          }
          case 4: {
             // fire_3Step1
-            System.out.println("Creep does not exist, not firing");
             break;
          }
          case 5: {
             // creep_fire_1Step1
-            System.out.println("Creep idle");
             break;
          }
-         case 6: {
+         case 7: {
             // creep_fire_2Step1
             System.out.println("Creep aggroed, firing");
             break;
          }
-         case 9: {
+         case 10: {
             // move_1Step1
             System.out.println("Moving to creep");
-            break;
-         }
-         case 11: {
-            // move_2Step1
-            System.out.println("Creep does not exist or is already in range, not moving");
             break;
          }
          case 13: {
@@ -53,7 +45,7 @@ public class ChaserAgent_MentalStepExecute {
             ((__ValueTypes.LongVar)__$behaviorFrame[1]).l = System.currentTimeMillis() + ((__ValueTypes.IntVar)__$behaviorFrame[0]).i;
             break;
          }
-         case 21: {
+         case 23: {
             // ChaserAgent_RootCollectionBehaviorStep1
             System.out.println("Starting Chaser Agent");
             break;

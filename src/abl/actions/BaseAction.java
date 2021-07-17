@@ -17,6 +17,8 @@ public abstract class BaseAction extends PrimitiveAction {
 	 * Returns that the action has completed successfully. 
 	 */
     public synchronized int getCompletionStatus() {
-    	return completionStatus = SUCCESS;
+    	//return completionStatus = SUCCESS;
+        completionStatus = SUCCESS;
+        return completionStatus;
     }
 }

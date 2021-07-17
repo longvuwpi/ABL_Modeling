@@ -50,32 +50,32 @@ public class ChaserAgent_StepFactories {
             return new MentalStep(5, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$mentalExecute0_rfield, null, null, null);
          }
          case 6: {
-            // creep_fire_2Step1
-            return new MentalStep(6, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$mentalExecute0_rfield, null, null, null);
+            // creep_fire_1Step2
+            return new GoalStep(6, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$argumentExecute0_rfield, null, null, null, "Wait(int)", null, (short)0);
          }
          case 7: {
-            // creep_fire_2Step2
-            return new PrimitiveStep(7, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, new CreepAggro(), null, "creep_aggro");
+            // creep_fire_2Step1
+            return new MentalStep(7, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$mentalExecute0_rfield, null, null, null);
          }
          case 8: {
-            // manageMovement_1Step1
-            return new GoalStep(8, __$behaviorParent, true, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, "move()", null, (short)0);
+            // creep_fire_2Step2
+            return new PrimitiveStep(8, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, new CreepAggro(), null, "creep_aggro");
          }
          case 9: {
-            // move_1Step1
-            return new MentalStep(9, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$mentalExecute0_rfield, null, null, null);
+            // manageMovement_1Step1
+            return new GoalStep(9, __$behaviorParent, true, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, "move()", null, (short)0);
          }
          case 10: {
-            // move_1Step2
-            return new PrimitiveStep(10, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$argumentExecute0_rfield, null, null, null, new MoveToDestination(), null, "move_to_object");
+            // move_1Step1
+            return new MentalStep(10, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$mentalExecute0_rfield, null, null, null);
          }
          case 11: {
-            // move_2Step1
-            return new MentalStep(11, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$mentalExecute0_rfield, null, null, null);
+            // move_1Step2
+            return new PrimitiveStep(11, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$argumentExecute0_rfield, null, null, null, new MoveToObject(), null, "move_to_object");
          }
          case 12: {
-            // move_2Step2
-            return new PrimitiveStep(12, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$argumentExecute0_rfield, null, null, null, new Stop(), null, "stop");
+            // move_2Step1
+            return new GoalStep(12, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$argumentExecute0_rfield, null, null, null, "Wait(int)", null, (short)0);
          }
          case 13: {
             // Wait_1Step1
@@ -110,12 +110,24 @@ public class ChaserAgent_StepFactories {
             return new GoalStep(20, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, "creep_fire()", null, (short)0);
          }
          case 21: {
-            // ChaserAgent_RootCollectionBehaviorStep1
-            return new MentalStep(21, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$mentalExecute0_rfield, null, null, null);
+            // player_1Step1
+            return new GoalStep(21, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, "move()", null, (short)0);
          }
          case 22: {
+            // player_1Step2
+            return new GoalStep(22, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, "fire()", null, (short)0);
+         }
+         case 23: {
+            // ChaserAgent_RootCollectionBehaviorStep1
+            return new MentalStep(23, __$behaviorParent, false, false, false, false, false, false, (short)-32768, (short)0, false, null, ChaserAgent.__$mentalExecute0_rfield, null, null, null);
+         }
+         case 24: {
             // ChaserAgent_RootCollectionBehaviorStep2
-            return new GoalStep(22, __$behaviorParent, true, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, "beginAction()", null, (short)0);
+            return new GoalStep(24, __$behaviorParent, true, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, "player()", null, (short)0);
+         }
+         case 25: {
+            // ChaserAgent_RootCollectionBehaviorStep3
+            return new GoalStep(25, __$behaviorParent, true, false, false, false, false, false, (short)-32768, (short)0, false, null, null, null, null, null, "creep_fire()", null, (short)0);
          }
       default:
          throw new AblRuntimeError("Unexpected stepID " + __$stepID);

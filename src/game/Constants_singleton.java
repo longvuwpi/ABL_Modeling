@@ -32,6 +32,8 @@ public class Constants_singleton {
         public static int hero_atk_range = 250;
         public static double hero_move_speed = 5.5;
         
+        public static int creep_respawn_time = 30;
+        
         public static int creep_width = 30;
         public static int creep_height = 30;
         public static int creep_health = 250;

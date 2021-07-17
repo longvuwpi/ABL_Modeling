@@ -270,7 +270,6 @@ public class Chaser extends JPanel implements KeyListener {
 
     @Override
     public void paint(Graphics g) {
-        System.out.println("there are " + Integer.toString(creeps.size()) + "creeps");
         super.paint(g);
         //drawLanePosition(g);
 

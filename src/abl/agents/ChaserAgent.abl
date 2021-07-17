@@ -24,8 +24,8 @@ behaving_entity ChaserAgent {
 	 */
 
 	register act stop(int) with Stop;
-        register act move_to_point(int, double, double) with MoveToDestination;
-        register act move_to_object(int, int) with MoveToDestination;
+        register act move_to_point(int, double, double) with MoveToPoint;
+        register act move_to_object(int, int) with MoveToObject;
 	register act fire(int, int) with Fire;
         register act creep_aggro() with CreepAggro;
 
@@ -93,7 +93,7 @@ behaving_entity ChaserAgent {
                 specificity 2;
 
                 mental_act {
-                    System.out.println("Creep not in range, not firing");
+                    //System.out.println("Creep not in range, not firing");
                 }
         }
 
@@ -105,7 +105,7 @@ behaving_entity ChaserAgent {
                 specificity 2;
 
                 mental_act {
-                    System.out.println("Creep does not exist, not firing");
+                    //System.out.println("Creep does not exist, not firing");
                 }
         }
 
@@ -117,9 +117,10 @@ behaving_entity ChaserAgent {
             }
             
 		mental_act {
-			System.out.println("Creep idle");
+			//System.out.println("Creep idle");
 		}
-
+            
+                subgoal Wait(100);
             //specificity 3;
 
         }
@@ -164,6 +165,12 @@ behaving_entity ChaserAgent {
 	}
 
         sequential behavior move() {
+            specificity 2;
+
+            subgoal Wait(50);
+        }
+
+        /*sequential behavior move() {
 
 		precondition {
                     (PlayerWME player_object_id::playerID)
@@ -174,9 +181,13 @@ behaving_entity ChaserAgent {
                 }
 
                 act stop(playerID);
-        }
+        }*/
 	
 
+        sequential behavior seek_safety() {
+            
+
+        }
     /**
      * Utility behavior for suspending the execution of a behavior.
      *
@@ -208,6 +219,12 @@ behaving_entity ChaserAgent {
             subgoal creep_fire();
 
         }
+
+        sequential behavior player() {
+            subgoal seek_safety();
+            subgoal move();
+            subgoal fire();
+        }
     /** 
      * Root of the active behavior tree.
      *
@@ -221,6 +238,8 @@ behaving_entity ChaserAgent {
     	}
 
         //subgoal beginAction();
-        with (persistent) subgoal beginAction();
+        //with (persistent) subgoal beginAction();
+        with (persistent) subgoal player();
+        with (persistent) subgoal creep_fire();
     }
 }

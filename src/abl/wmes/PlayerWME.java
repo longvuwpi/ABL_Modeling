@@ -110,14 +110,8 @@ public class PlayerWME extends WME {
         NeutralCreep creep = (NeutralCreep) Chaser.getInstance().get_game_object_with_id(creep_object_id);
 
         while (creep == null) updateAndStore();
-        double distance = sqrt(pow(player.getX() - creep.getX(), 2) + pow(player.getY() - creep.getY(), 2));
-        boolean result = distance <= Constants_singleton.getInstance().hero_atk_range;
-        if (result) {
-            //System.out.println(distance + "is in range");
-        } else {
-            //System.out.println(distance + "Is not in range");
-        }
-        return result;
+
+        return player.is_object_in_attack_range(creep);
     }
 
     public void updateAndStore() {
@@ -140,7 +134,7 @@ public class PlayerWME extends WME {
                 if (!camp.getHas_alive_creeps()) {
                     continue;
                 }
-                double distance = sqrt(pow(player.getX() - camp.getX(), 2) + pow(player.getY() - camp.getY(), 2));
+                double distance = sqrt(pow(player.getX() - camp.getX(), 2.0) + pow(player.getY() - camp.getY(), 2.0));
                 if (distance <= min_distance) {
                     min_distance = distance;
                     closest_camp = camp;

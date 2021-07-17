@@ -32,6 +32,7 @@ public class Player extends Character {
         gold = 100;
         setIdle(false);
         setSpeed(Constants_singleton.hero_move_speed);
+        set_attack_range(Constants_singleton.hero_atk_range);
         add_to_world();
 
     }
@@ -62,10 +63,10 @@ public class Player extends Character {
     }
 
     @Override
-    public void NormalAttackAtTarget(Character target) {
+    public boolean NormalAttackAtTarget(Character target) {
         if (!is_dead) {
-            super.NormalAttackAtTarget(target);
-        }
+            return super.NormalAttackAtTarget(target);
+        } else return false;
     }
     
     public void spawn() {
