@@ -17,7 +17,7 @@ public class Bullet extends GameObject {
     /**
      * bullet speed
      */
-    public double BulletSpeed = 10.0;
+    public double BulletSpeed = 16.0;
     public static double bullet_size = 4;
 
     /**
@@ -33,6 +33,8 @@ public class Bullet extends GameObject {
 
         updatePathing();
 
+        set_layer(1);
+        
         add_to_world();
     }
 

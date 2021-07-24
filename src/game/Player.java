@@ -8,6 +8,7 @@ package game;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.geom.Ellipse2D;
 import static java.lang.System.currentTimeMillis;
 
 /**
@@ -16,14 +17,20 @@ import static java.lang.System.currentTimeMillis;
  */
 public class Player extends Character {
 
+    private PlayerBase base;
     private int gold = 0;
     private boolean is_dead;
     private int dead_time = 5;
     private long dead_time_marker;
 
+    private long base_heal_marker = 0;
+
+    private int vision_diameter;
+    private Ellipse2D vision;
+    
     //initialize values of the player
-    public Player() {
-        super(Constants_singleton.getInstance().hero_width, Constants_singleton.getInstance().hero_height, Constants_singleton.base_location.x, Constants_singleton.base_location.y);
+    public Player(PlayerBase new_base) {
+        super(Constants_singleton.getInstance().hero_width, Constants_singleton.getInstance().hero_height, new_base.getX(), new_base.getY());
         setColor(Color.DARK_GRAY);
         health = Constants_singleton.getInstance().hero_health;
         is_dead = false;
@@ -33,6 +40,9 @@ public class Player extends Character {
         setIdle(false);
         setSpeed(Constants_singleton.hero_move_speed);
         set_attack_range(Constants_singleton.hero_atk_range);
+        base = new_base;
+        vision_diameter = Constants_singleton.hero_vision_diameter;
+        vision = new Ellipse2D.Double(getX() + getSize_width()/2 - vision_diameter/2, getY() + getSize_height()/2 - vision_diameter/2, vision_diameter, vision_diameter);
         add_to_world();
 
     }
@@ -59,6 +69,18 @@ public class Player extends Character {
             if (dead_time_passed > dead_time) {
                 spawn();
             }
+        } else {
+            vision.setFrame(getX() + getSize_width()/2 - vision_diameter/2, getY() + getSize_height()/2 - vision_diameter/2, vision_diameter, vision_diameter);
+            
+            if (bounding_box.intersects(base.bounding_box)) {
+                if ((currentTimeMillis() - base_heal_marker) >= 1000.0) {
+                    health += Constants_singleton.base_heal_per_second;
+                    base_heal_marker = currentTimeMillis();
+                    if (health >= max_health) {
+                        health = max_health;
+                    }
+                }
+            }
         }
     }
 
@@ -66,9 +88,11 @@ public class Player extends Character {
     public boolean NormalAttackAtTarget(Character target) {
         if (!is_dead) {
             return super.NormalAttackAtTarget(target);
-        } else return false;
+        } else {
+            return false;
+        }
     }
-    
+
     public void spawn() {
         health = max_health;
         is_dead = false;
@@ -79,8 +103,12 @@ public class Player extends Character {
     @Override
     public void paintObject(Graphics g) {
         if (!is_dead) {
+            Color vision_color = new Color(140, 255, 0, 110);
+            g.setColor(vision_color);
+            g.fillOval((int)vision.getX(), (int)vision.getY(), vision_diameter, vision_diameter);
             super.paintObject(g);
         } else {
+            // draw the dead time counter on the screen when the player is dead
             g.setColor(Color.GRAY);
             int count_down = dead_time - (int) ((currentTimeMillis() - dead_time_marker) / 1000);
             String dead = "PLAYER DIED";
@@ -89,6 +117,8 @@ public class Player extends Character {
             g.drawString(dead, 560, 150);
             g.drawString(time, 600, 180);
         }
+        
+        //draw how much gold the player has
         g.setColor(Color.BLACK);
         g.fillRect(25, 20, 175, 50);
         g.setColor(Color.orange);
@@ -99,5 +129,13 @@ public class Player extends Character {
 
     public boolean is_dead() {
         return is_dead;
+    }
+    
+    public void set_target_to_base(){
+        set_target(this.base);
+    }
+    
+    public PlayerBase get_base() {
+        return base;
     }
 }

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import game.*;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.pow;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Stores information about the player character.
@@ -36,6 +37,8 @@ public class PlayerWME extends WME {
     private double creep_location_y;
     private boolean creep_exists;
 
+    private boolean is_in_danger;
+    
     /**
      * Instantiates a working memory element for tracking the player character.
      */
@@ -101,6 +104,10 @@ public class PlayerWME extends WME {
         return creep_object_id;
     }
 
+    public boolean getIs_in_danger() {
+        return is_in_danger;
+    }
+    
     public boolean getIsInRangeOfCreep() {
         if (Chaser.getInstance().getListOfCreeps().isEmpty()) {
             return false;
@@ -114,9 +121,22 @@ public class PlayerWME extends WME {
         return player.is_object_in_attack_range(creep);
     }
 
+    public void select_camp() {
+        ArrayList<NeutralCreepCamp> camps = Chaser.getInstance().getListOfCamps();
+        ArrayList<Double> camp_score_distance = new ArrayList<Double>();
+        ArrayList<Double> camp_score_creep_health = new ArrayList<Double>();
+        
+        for (NeutralCreepCamp camp: camps) {
+            
+        }
+        
+        //double random = ThreadLocalRandom.current().nextDouble(min, max);        
+    }
     public void updateAndStore() {
         Character player = Chaser.getInstance().getListOfPlayers().get(0);
 
+        is_in_danger = (player.getHealth() <= (player.getMaxHealth() * 25 / 100));
+        
         player_location_x = player.getX();
         player_location_y = player.getY();
         player_trajectory_dx = (int) player.getDx();

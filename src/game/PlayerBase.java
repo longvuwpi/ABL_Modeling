@@ -20,7 +20,7 @@ public class PlayerBase extends GameObject {
         add_to_world();
     }
     
-    @Override
+    /*@Override
     public double getX() {
         return (x + size_width/2);
     }
@@ -28,5 +28,5 @@ public class PlayerBase extends GameObject {
     @Override
     public double getY() {
         return (y + size_height/2);
-    }
+    }*/
 }

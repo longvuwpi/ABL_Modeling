@@ -17,7 +17,7 @@ class FireThread extends Thread {
     Character to_fire;
     Character target;
     Fire the_action;
-    volatile boolean running = false;
+    protected volatile boolean running = false;
     
     FireThread(Character tofire, Character tar, Fire theaction) {
         to_fire = tofire;
@@ -37,6 +37,7 @@ class FireThread extends Thread {
             }
         }
 
+        success = target.getHealth() <= 0;
         the_action.set_complete(success);
 
     }
@@ -45,6 +46,8 @@ class FireThread extends Thread {
 
 public class Fire extends BaseAction {
 
+    FireThread execution_thread;
+    
     /**
      * Fires a bullet at the target location.
      *
@@ -61,13 +64,18 @@ public class Fire extends BaseAction {
         }
         //attacker.NormalAttackAtTarget(target);
         completionStatus = NOT_COMPLETE;
-        FireThread new_thread = new FireThread(attacker,target,this);
-        new_thread.start();
+        execution_thread = new FireThread(attacker,target,this);
+        execution_thread.start();
         //Chaser.getInstance().fireChaserBullet(
         //		new Point((Integer)args[0], (Integer)args[1]), 
         //		new Point((Integer)args[2], (Integer)args[3]));
     }
 
+    @Override
+    public void abort() {
+        execution_thread.running = false;
+    }
+    
     public void set_complete(boolean succeeded) {
         //System.out.println("I'm set to complete moving");
         if (succeeded) {

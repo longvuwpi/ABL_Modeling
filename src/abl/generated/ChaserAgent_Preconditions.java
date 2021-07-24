@@ -297,6 +297,55 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
+         case 9: {
+            // seek_safety_1
+            boolean playerInDanger;
+            int playerID;
+               List wmeList0;
+               ListIterator wmeIter0;
+               wmeList0 = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
+               wmeIter0 = wmeList0.listIterator();
+               while(wmeIter0.hasNext()) {
+                  PlayerWME wme__0 = (PlayerWME)wmeIter0.next();
+                  if (
+                     BehavingEntity.constantTrue(playerID = wme__0.getPlayer_object_id())
+                  )
+
+                  {
+                        List wmeList1;
+                        ListIterator wmeIter1;
+                        wmeList1 = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
+                        wmeIter1 = wmeList1.listIterator();
+                        while(wmeIter1.hasNext()) {
+                           PlayerWME wme__1 = (PlayerWME)wmeIter1.next();
+                           if (
+                              BehavingEntity.constantTrue(playerInDanger = wme__1.getIs_in_danger())
+                           )
+
+                           {
+                                 if (
+                                    playerInDanger == true
+                                 )
+
+                                 {
+                                    __$variableTable.put("playerInDanger", new Boolean(playerInDanger));
+                                    __$variableTable.put("playerID", new Integer(playerID));
+                                    return true;
+                                 }
+
+
+                           }
+
+                        }
+
+
+                  }
+
+               }
+
+
+            return false;
+         }
       default:
          throw new AblRuntimeError("Unexpected behaviorID " + __$behaviorID);
       }

@@ -42,6 +42,7 @@ public class Character extends GameObject {
      */
     public Character(double width, double height, double location_x, double location_y) {
         super(width, height, location_x, location_y, 0, 0, 0, true, Color.BLACK);
+        set_layer(1);
         //character_type = new_character_type;
 
     }
@@ -81,6 +82,10 @@ public class Character extends GameObject {
         this.health = health;
     }
 
+    public int getMaxHealth() {
+        return max_health;
+    }
+    
     public int getDamage() {
         return damage;
     }

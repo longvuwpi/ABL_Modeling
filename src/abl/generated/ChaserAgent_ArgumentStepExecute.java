@@ -39,6 +39,12 @@ public class ChaserAgent_ArgumentStepExecute {
             args[0] = new Integer(50);
             return args;
          }
+         case 13: {
+            // seek_safety_1Step1
+            final Object[] args = new Object[1];
+            args[0] = new Integer(((__ValueTypes.IntVar)__$behaviorFrame[1]).i);
+            return args;
+         }
       default:
          throw new AblRuntimeError("Unexpected stepID " + __$stepID);
       }

@@ -13,6 +13,14 @@ import java.awt.Point;
 public class ChaserAgent_ContextConditionSensorFactories {
    static public SensorActivation[] contextConditionSensorFactory0(int __$behaviorID) {
       switch (__$behaviorID) {
+         case 1: {
+               SensorActivation[] __$activationArray = {
+                  new SensorActivation(new PlayerSensor(), null)
+               };
+
+               return __$activationArray;
+
+         }
       default:
          throw new AblRuntimeError("Unexpected behaviorID " + __$behaviorID);
       }

@@ -40,12 +40,12 @@ public class ChaserAgent_MentalStepExecute {
             System.out.println("Moving to creep");
             break;
          }
-         case 13: {
+         case 14: {
             // Wait_1Step1
             ((__ValueTypes.LongVar)__$behaviorFrame[1]).l = System.currentTimeMillis() + ((__ValueTypes.IntVar)__$behaviorFrame[0]).i;
             break;
          }
-         case 23: {
+         case 25: {
             // ChaserAgent_RootCollectionBehaviorStep1
             System.out.println("Starting Chaser Agent");
             break;

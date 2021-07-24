@@ -4,6 +4,7 @@ import game.Chaser;
 import game.Character;
 import game.Constants_singleton;
 import game.GameObject;
+import game.Player;
 import java.awt.Point;
 
 /**
@@ -11,62 +12,57 @@ import java.awt.Point;
  *
  * @author Ben Weber 3-7-11
  */
-class MoveToObjectThread extends Thread {
 
-    Character to_move;
-    GameObject destination;
-    MoveToObject the_action;
+class GoToBaseThread extends Thread {
+
+    Player to_move;
+    GoToBase the_action;
     volatile boolean running = false;
-
-    MoveToObjectThread(Character tomove, GameObject dest, MoveToObject theaction) {
+    GoToBaseThread(Player tomove, GoToBase theaction) {
         to_move = tomove;
-        destination = dest;
         the_action = theaction;
         running = true;
     }
 
     public void run() {
         boolean success = false;
+        Point in_base = new Point((int)(to_move.get_base().getX() + (to_move.get_base().getSize_width() / 2)), (int)(to_move.get_base().getY() + (to_move.get_base().getSize_height()/2)));
         while (running) {
-            if (to_move.is_object_in_attack_range(destination)) {
+            if (to_move.getBounding_box().contains(in_base)) {
+                to_move.setDx(0);
+                to_move.setDy(0);
+            }
+            if (to_move.getHealth() >= (to_move.getMaxHealth() * 90 / 100)) {
                 running = false;
-                //System.out.println("Stop moving");
-
+                            //System.out.println("Stop moving");
             }
         }
-        to_move.setDx(0.0);
-        to_move.setDy(0.0);
+
         the_action.set_complete();
 
     }
 
 }
 
-public class MoveToObject extends BaseAction {
-
-    Character to_move = null;
-    GameObject destination;
-    MoveToObject the_action;
+public class GoToBase extends BaseAction {
 
     /**
      * Sets the trajectory of the player to move down.
      */
     public void execute(Object[] args) {
-        to_move = (Character) Chaser.getInstance().get_game_object_with_id((Integer) args[0]);
+        Player to_move = (Player) Chaser.getInstance().get_game_object_with_id((Integer) args[0]);
 
         if (to_move == null) {
             return;
         }
 
-        GameObject target = Chaser.getInstance().get_game_object_with_id((Integer) args[1]);
-        to_move.set_target(target);
+        to_move.set_target_to_base();
 
         completionStatus = NOT_COMPLETE;
-
-        MoveToObjectThread new_thread = new MoveToObjectThread(to_move, target, this);
+        
+        GoToBaseThread new_thread = new GoToBaseThread(to_move, this);
         new_thread.start();
-//Chaser.getInstance().setPlayerTrajectory(new Point(0,Chaser.ChaserSpeed));
-        destination = target;
+
     }
 
     @Override

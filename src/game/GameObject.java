@@ -43,6 +43,11 @@ public class GameObject {
      */
     protected boolean idle = false;
 
+    //default layer is 0
+    // 0 is for environment (creep camps, base)
+    // 1 is for other things (player, creep, bullets)
+    private int layer = 0;
+    
     /**
      * bullet speed
      */
@@ -216,4 +221,11 @@ public class GameObject {
         return bounding_box;
     }
 
+    public void set_layer(int newlayer) {
+        layer = newlayer;
+    }
+    
+    public int get_layer(){
+        return layer;
+    }
 }

@@ -61,6 +61,14 @@ public class ChaserAgent_PreconditionSensorFactories {
                return __$activationArray;
 
          }
+         case 9: {
+               SensorActivation[] __$activationArray = {
+                  new SensorActivation(new PlayerSensor(), null)
+               };
+
+               return __$activationArray;
+
+         }
       default:
          throw new AblRuntimeError("Unexpected behaviorID " + __$behaviorID);
       }

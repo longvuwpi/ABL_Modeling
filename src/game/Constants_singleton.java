@@ -20,6 +20,8 @@ public class Constants_singleton {
 	public static int gankPositionLength = 60;
 	
         public static Point base_location = new Point(700,200);
+        public static int base_heal_per_second = 60;
+        
         public static Point creep_camp_position = new Point(100,300);
         
 	public static Point baitPoint = new Point(laneStart_x + baitInitialPositionLength - offset, laneStart_y + laneLength_y/2);
@@ -29,8 +31,9 @@ public class Constants_singleton {
         public static int hero_height = 50;
         public static int hero_health = 600;
         public static int hero_damage = 80;
-        public static int hero_atk_range = 250;
+        public static int hero_atk_range = 175;
         public static double hero_move_speed = 5.5;
+        public static int hero_vision_diameter = 525;
         
         public static int creep_respawn_time = 30;
         
@@ -39,6 +42,7 @@ public class Constants_singleton {
         public static int creep_health = 250;
         public static int creep_damage = 8;
         public static int creep_gold_bounty = 50;
+        public static int creep_atk_range = 225;
         
         public static int ancientcreep_width = 25;
         public static int ancientcreep_height = 25;

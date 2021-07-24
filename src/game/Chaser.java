@@ -30,47 +30,6 @@ public class Chaser extends JPanel implements KeyListener {
     private Point dimensions = new Point(Constants_singleton.getInstance().width, Constants_singleton.getInstance().height);
 
     /**
-     * location of the player character
-     */
-    //private Point playerLocation = new Point((int)(dimensions.x*Math.random()), (int)(dimensions.y*Math.random()));
-    private Point playerLocation = Constants_singleton.getInstance().base_location;
-
-    /**
-     * trajectory of the player character
-     */
-    private Point playerTrajectory = new Point(0, 0);
-
-    /**
-     * location of the chaser
-     */
-    private Point chaserLocation = new Point((int) (dimensions.x * Math.random()), (int) (dimensions.y * Math.random()));
-
-    /**
-     * trajectory of the chaser
-     */
-    private Point chaserTrajectory = new Point(0, 0);
-
-    /**
-     * size of the player character
-     */
-    private static final int playerSize = 10;
-
-    /**
-     * size of the bullets
-     */
-    private static final int bulletSize = 4;
-
-    /**
-     * speed of the player character
-     */
-    private static final int PlayerSpeed = 4;
-
-    /**
-     * speed of the player character
-     */
-    public static final int ChaserSpeed = 2;
-
-    /**
      * keys held down
      */
     private boolean[] keyPresses = new boolean[256];
@@ -81,31 +40,12 @@ public class Chaser extends JPanel implements KeyListener {
     private static Chaser chaser;
 
     /**
-     * did the player fire a bullet
-     */
-    private boolean spawnBullet = false;
-
-    /**
      * bullets which have been fired by both players
      */
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
-    /**
-     * spawn a chaser bullet?
-     */
-    private boolean spawnChaserBullet = false;
-
-    /**
-     * source position of the chaser bullet
-     */
-    private Point chaserBulletSource;
-
-    /**
-     * target position of the chaser bullet
-     */
-    private Point chaserBulletTarget;
-
     private HashMap<Integer, GameObject> gameObjects = new HashMap<Integer, GameObject>();
+    private HashMap<Integer, ArrayList<GameObject>> layers = new HashMap<Integer, ArrayList<GameObject>>();
 
     //private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
     private ArrayList<Player> players = new ArrayList<Player>();
@@ -170,11 +110,16 @@ public class Chaser extends JPanel implements KeyListener {
     public void startAgent() {
         //GameObject base = new GameObject(120,120,Constants_singleton.base_location.x, Constants_singleton.base_location.y,0,0,0,true,Color.GRAY);
         //base.add_to_world();
+        ArrayList<GameObject> layer_0 = new ArrayList<GameObject>();
+        ArrayList<GameObject> layer_1 = new ArrayList<GameObject>();
+        layers.put(0, layer_0);
+        layers.put(1, layer_1);
+        
         PlayerBase base = new PlayerBase();
-        NeutralCreepCamp creep_camp = new NeutralCreepCamp(100, 100, Constants_singleton.creep_camp_position.x, Constants_singleton.creep_camp_position.y);
-        NeutralCreepCamp creep_camp2 = new NeutralCreepCamp(100, 100, 1000, 500);
+        NeutralCreepCamp creep_camp = new NeutralCreepCamp(100, 100, 60, 400);
+        NeutralCreepCamp creep_camp2 = new NeutralCreepCamp(100, 100, 1000, 650);
 
-        Player player = new Player();
+        Player player = new Player(base);
         //Character creep = new Character(Constants_singleton.getInstance().creep_width, Constants_singleton.getInstance().creep_height,creep_camp.getX(), creep_camp.getY(), CharacterType.CREEP);
 
         System.out.println("hero id is " + player.getGame_object_id());
@@ -187,6 +132,7 @@ public class Chaser extends JPanel implements KeyListener {
     }
 
     public void queue_addObject(GameObject new_object) {
+        if (new_object == null) System.out.println("something weird is happening");
         queue_add.add(new_object);
     }
 
@@ -196,19 +142,23 @@ public class Chaser extends JPanel implements KeyListener {
 
     private void add_objects_in_queue() {
         while (!queue_add.isEmpty()) {
-            addObject(queue_add.poll());
+            GameObject current = queue_add.poll();
+            if (current != null) addObject(current);
         }
     }
 
     private void remove_objects_in_queue() {
         while (!queue_remove.isEmpty()) {
-            removeObject(queue_remove.poll());
+            GameObject current = queue_remove.poll();
+            if (current != null) removeObject(current);
         }
     }
 
     public void addObject(GameObject new_object) {
         //gameObjects.add(new_object);
         gameObjects.put(new_object.getGame_object_id(), new_object);
+        layers.get(new_object.get_layer()).add(new_object);
+        
         if (new_object instanceof Bullet) {
             bullets.add((Bullet) new_object);
         }
@@ -225,6 +175,8 @@ public class Chaser extends JPanel implements KeyListener {
 
     public void removeObject(GameObject object_to_remove) {
         gameObjects.remove(object_to_remove.getGame_object_id());
+        layers.get(object_to_remove.get_layer()).remove(object_to_remove);
+        
         //gameObjects.remove(object_to_remove);
         if (object_to_remove instanceof Bullet) {
             bullets.remove((Bullet) object_to_remove);
@@ -307,7 +259,12 @@ public class Chaser extends JPanel implements KeyListener {
     }
 
     public void paintWorld(Graphics g) {
-        for (GameObject object : gameObjects.values()) {
+        
+        for (GameObject object : layers.get(0)) {
+            object.paintObject(g);
+        }
+        
+        for (GameObject object : layers.get(1)) {
             object.paintObject(g);
         }
 

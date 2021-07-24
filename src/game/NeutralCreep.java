@@ -25,6 +25,8 @@ public class NeutralCreep extends Character {
         damage = Constants_singleton.getInstance().creep_damage;
         gold_bounty = Constants_singleton.getInstance().creep_gold_bounty;
 
+        set_attack_range(Constants_singleton.creep_atk_range);
+        
         add_to_world();
     }
 
@@ -67,7 +69,11 @@ public class NeutralCreep extends Character {
         super.update();
         
         if (getAggro_unit() != null) {
+            if (is_object_in_attack_range(getAggro_unit())) {
             boolean is = NormalAttackAtTarget(getAggro_unit());
+            } else {
+                camp.de_aggro();
+            }
         }
     }
     

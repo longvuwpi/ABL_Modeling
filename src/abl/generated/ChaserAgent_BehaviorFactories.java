@@ -21,13 +21,14 @@ public class ChaserAgent_BehaviorFactories {
          }
          case 1: {
             // fire_1
-               final Object[] __$behaviorFrame = new Object[3];
+               final Object[] __$behaviorFrame = new Object[4];
                __$behaviorFrame[0] = new __ValueTypes.IntVar((Integer)__$boundVars.get("creepID"));
                __$behaviorFrame[1] = new __ValueTypes.IntVar((Integer)__$boundVars.get("playerID"));
                __$behaviorFrame[2] = new __ValueTypes.BooleanVar((Boolean)__$boundVars.get("creepInRange"));
+               __$behaviorFrame[3] = new __ValueTypes.BooleanVar();
 
             final __StepDesc[] __$steps = {new __StepDesc(1, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(2, ChaserAgent.__$stepFactory0_rfield)};
-            return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)1, 1, __$behaviorFrame, __$steps);
+            return new SequentialBehavior(__$parentGoal, ChaserAgent.__$contextCondition0_rfield, ChaserAgent.__$contextConditionSensorFactory0_rfield, null, null, false, __$signature, (short)1, 1, __$behaviorFrame, __$steps);
          }
          case 2: {
             // fire_2
@@ -85,43 +86,58 @@ public class ChaserAgent_BehaviorFactories {
             return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)2, 8, null, __$steps);
          }
          case 9: {
+            // seek_safety_1
+               final Object[] __$behaviorFrame = new Object[2];
+               __$behaviorFrame[0] = new __ValueTypes.BooleanVar((Boolean)__$boundVars.get("playerInDanger"));
+               __$behaviorFrame[1] = new __ValueTypes.IntVar((Integer)__$boundVars.get("playerID"));
+
+            final __StepDesc[] __$steps = {new __StepDesc(13, ChaserAgent.__$stepFactory0_rfield)};
+            return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)3, 9, __$behaviorFrame, __$steps);
+         }
+         case 10: {
+            // seek_safety_2
+
+            final __StepDesc[] __$steps = {new __StepDesc(-1, ChaserAgent.__$stepFactory0_rfield)};
+            return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)2, 10, null, __$steps);
+         }
+         case 11: {
             // Wait_1
                final Object[] __$behaviorFrame = new Object[2];
                __$behaviorFrame[0] = new __ValueTypes.IntVar((Integer)__$args[0]);
                __$behaviorFrame[1] = new __ValueTypes.LongVar();
 
-            final __StepDesc[] __$steps = {new __StepDesc(13, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(14, ChaserAgent.__$stepFactory0_rfield)};
-            return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 9, __$behaviorFrame, __$steps);
-         }
-         case 10: {
-            // player_behavior_1
-
-            final __StepDesc[] __$steps = {new __StepDesc(15, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(16, ChaserAgent.__$stepFactory0_rfield)};
-            return new ParallelBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 10, null, __$steps, 2);
-         }
-         case 11: {
-            // creep_behavior_1
-
-            final __StepDesc[] __$steps = {new __StepDesc(17, ChaserAgent.__$stepFactory0_rfield)};
-            return new SequentialBehavior(__$parentGoal, null, null, null, null, true, __$signature, (short)0, 11, null, __$steps);
+            final __StepDesc[] __$steps = {new __StepDesc(14, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(15, ChaserAgent.__$stepFactory0_rfield)};
+            return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 11, __$behaviorFrame, __$steps);
          }
          case 12: {
-            // beginAction_1
+            // player_behavior_1
 
-            final __StepDesc[] __$steps = {new __StepDesc(18, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(19, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(20, ChaserAgent.__$stepFactory0_rfield)};
-            return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 12, null, __$steps);
+            final __StepDesc[] __$steps = {new __StepDesc(16, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(17, ChaserAgent.__$stepFactory0_rfield)};
+            return new ParallelBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 12, null, __$steps, 2);
          }
          case 13: {
-            // player_1
+            // creep_behavior_1
 
-            final __StepDesc[] __$steps = {new __StepDesc(21, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(22, ChaserAgent.__$stepFactory0_rfield)};
-            return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 13, null, __$steps);
+            final __StepDesc[] __$steps = {new __StepDesc(18, ChaserAgent.__$stepFactory0_rfield)};
+            return new SequentialBehavior(__$parentGoal, null, null, null, null, true, __$signature, (short)0, 13, null, __$steps);
          }
          case 14: {
+            // beginAction_1
+
+            final __StepDesc[] __$steps = {new __StepDesc(19, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(20, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(21, ChaserAgent.__$stepFactory0_rfield)};
+            return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 14, null, __$steps);
+         }
+         case 15: {
+            // player_1
+
+            final __StepDesc[] __$steps = {new __StepDesc(22, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(23, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(24, ChaserAgent.__$stepFactory0_rfield)};
+            return new SequentialBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 15, null, __$steps);
+         }
+         case 16: {
             // ChaserAgent_RootCollectionBehavior
 
-            final __StepDesc[] __$steps = {new __StepDesc(23, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(24, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(25, ChaserAgent.__$stepFactory0_rfield)};
-            return new CollectionBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 14, null, __$steps, 3);
+            final __StepDesc[] __$steps = {new __StepDesc(25, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(26, ChaserAgent.__$stepFactory0_rfield), new __StepDesc(27, ChaserAgent.__$stepFactory0_rfield)};
+            return new CollectionBehavior(__$parentGoal, null, null, null, null, false, __$signature, (short)0, 16, null, __$steps, 3);
          }
       default:
          throw new AblRuntimeError("Unexpected behaviorID " + __$behaviorID);

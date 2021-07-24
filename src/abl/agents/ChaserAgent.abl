@@ -28,6 +28,7 @@ behaving_entity ChaserAgent {
         register act move_to_object(int, int) with MoveToObject;
 	register act fire(int, int) with Fire;
         register act creep_aggro() with CreepAggro;
+        register act go_to_base(int) with GoToBase;
 
 	/**
 	 * Define the sensors that add game state to working memory. Each sensor defines the name of the WME class
@@ -73,6 +74,11 @@ behaving_entity ChaserAgent {
                     (PlayerWME creep_object_id::creepID)
                     (PlayerWME player_object_id::playerID)
                     (creepInRange == true) 
+                }
+
+                context_condition {
+                    (PlayerWME is_in_danger::playerInDanger)
+                    (playerInDanger == false)
                 }
 
                 specificity 1;
@@ -185,8 +191,21 @@ behaving_entity ChaserAgent {
 	
 
         sequential behavior seek_safety() {
+            precondition {
+                (PlayerWME player_object_id::playerID)
+                (PlayerWME is_in_danger::playerInDanger)
+                (playerInDanger == true)
+            }
             
+            specificity 3;
+            
+            act go_to_base(playerID);
+        }
 
+        sequential behavior seek_safety() {
+            specificity 2;
+
+            succeed_step;
         }
     /**
      * Utility behavior for suspending the execution of a behavior.
