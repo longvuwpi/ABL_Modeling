@@ -142,7 +142,7 @@ public class Character extends GameObject {
     }
 
     public boolean is_object_in_attack_range(GameObject the_object) {
-        double distance = sqrt(pow(getX() - the_object.getX(), 2.0) + pow(getY() - the_object.getY(), 2.0));
+        double distance = sqrt(pow((getX() + getSize_width()/2) - (the_object.getX() + the_object.getSize_width()/2), 2.0) + pow((getY() + getSize_height()/2) - (the_object.getY() + the_object.getSize_height()/2), 2.0));
         return (distance <= attack_range);
     }
 }

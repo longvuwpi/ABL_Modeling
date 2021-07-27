@@ -99,7 +99,7 @@ behaving_entity ChaserAgent {
                 specificity 2;
 
                 mental_act {
-                    //System.out.println("Creep not in range, not firing");
+                    System.out.println("Creep not in range, not firing");
                 }
         }
 
@@ -111,7 +111,7 @@ behaving_entity ChaserAgent {
                 specificity 2;
 
                 mental_act {
-                    //System.out.println("Creep does not exist, not firing");
+                    System.out.println("Creep does not exist, not firing");
                 }
         }
 
@@ -123,7 +123,7 @@ behaving_entity ChaserAgent {
             }
             
 		mental_act {
-			//System.out.println("Creep idle");
+			System.out.println("Creep idle");
 		}
             
                 subgoal Wait(100);
@@ -172,6 +172,10 @@ behaving_entity ChaserAgent {
 
         sequential behavior move() {
             specificity 2;
+		
+            mental_act {
+			System.out.println("I'm not actually moving");
+            }
 
             subgoal Wait(50);
         }
@@ -199,11 +203,19 @@ behaving_entity ChaserAgent {
             
             specificity 3;
             
+                            mental_act {
+                    System.out.println("I'm seeking safety");
+                }
+
             act go_to_base(playerID);
         }
 
         sequential behavior seek_safety() {
             specificity 2;
+
+                            mental_act {
+                    System.out.println("I don't have to seek safety");
+                }
 
             succeed_step;
         }

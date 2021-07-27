@@ -16,6 +16,7 @@ import java.awt.Font;
 import static java.lang.System.currentTimeMillis;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Simple "game" for showing how to interface an ABL agent.
@@ -52,8 +53,8 @@ public class Chaser extends JPanel implements KeyListener {
     private ArrayList<NeutralCreep> creeps = new ArrayList<NeutralCreep>();
     private ArrayList<NeutralCreepCamp> camps = new ArrayList<NeutralCreepCamp>();
     
-    private LinkedList<GameObject> queue_add = new LinkedList<GameObject>();
-    private LinkedList<GameObject> queue_remove = new LinkedList<GameObject>();
+    private ConcurrentLinkedQueue<GameObject> queue_add = new ConcurrentLinkedQueue<GameObject>();
+    private ConcurrentLinkedQueue<GameObject> queue_remove = new ConcurrentLinkedQueue<GameObject>();
 
     long start_time_millis;
     int elapsed_minutes;
@@ -143,15 +144,17 @@ public class Chaser extends JPanel implements KeyListener {
     private void add_objects_in_queue() {
         while (!queue_add.isEmpty()) {
             GameObject current = queue_add.poll();
-            if (current != null) addObject(current);
+            addObject(current);
         }
+        
     }
 
     private void remove_objects_in_queue() {
         while (!queue_remove.isEmpty()) {
             GameObject current = queue_remove.poll();
-            if (current != null) removeObject(current);
+            removeObject(current);
         }
+        
     }
 
     public void addObject(GameObject new_object) {

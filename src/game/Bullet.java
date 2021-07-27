@@ -2,6 +2,8 @@ package game;
 
 import java.awt.Point;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 
 /**
  * Records the location and trajectory of a bullet.
@@ -27,7 +29,7 @@ public class Bullet extends GameObject {
         super(bullet_size, bullet_size, 0, 0, 0, 0, 0, false, Color.BLACK);
         owner = new_owner;
         target = new_target;
-
+        
         setX(new_owner.getX() + (new_owner.getSize_width() / 2.0));
         setY(new_owner.getY() + (new_owner.getSize_height() / 2.0));
 
@@ -79,6 +81,17 @@ public class Bullet extends GameObject {
         //owner = (Character) Chaser.getInstance().get_game_object_with_id(owner.getGame_object_id());
         //target = (Character) Chaser.getInstance().get_game_object_with_id(target.getGame_object_id());
         updatePathing();
+        
+    }
+    
+    @Override
+    public void paintObject(Graphics g) {
+        super.paintObject(g);
+        
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+        String todraw = (owner instanceof Player) ? "pl" : "cr";
+        g.drawString(todraw, (int) getX(), (int) getY());
     }
 
 }
