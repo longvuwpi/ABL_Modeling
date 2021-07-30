@@ -142,7 +142,12 @@ public class Character extends GameObject {
     }
 
     public boolean is_object_in_attack_range(GameObject the_object) {
-        double distance = sqrt(pow((getX() + getSize_width()/2) - (the_object.getX() + the_object.getSize_width()/2), 2.0) + pow((getY() + getSize_height()/2) - (the_object.getY() + the_object.getSize_height()/2), 2.0));
+        double distance = Constants_singleton.getInstance().get_distance_between_objects(this, the_object);
         return (distance <= attack_range);
+    }
+    
+    @Override
+    public int get_estimated_strength() {
+        return (health * damage);
     }
 }

@@ -93,4 +93,16 @@ public class NeutralCreepCamp extends GameObject {
         return has_alive_creeps;
     }
 
+    @Override
+    public int get_estimated_strength() {
+        int sum = 0;
+        /*for (NeutralCreep creep : creeps) {
+            sum += creep.get_estimated_strength();
+        }*/
+        
+        sum = creeps.size() * Constants_singleton.creep_damage * Constants_singleton.creep_health;
+        
+        
+        return sum;
+    }
 }

@@ -228,4 +228,8 @@ public class GameObject {
     public int get_layer(){
         return layer;
     }
+    
+    public int get_estimated_strength() {
+        return 0;
+    }
 }

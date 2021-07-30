@@ -138,4 +138,8 @@ public class Player extends Character {
     public PlayerBase get_base() {
         return base;
     }
+    
+    public boolean is_object_in_vision(GameObject game_object) {
+        return vision.intersects(game_object.bounding_box);
+    }
 }

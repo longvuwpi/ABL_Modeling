@@ -1,6 +1,8 @@
  package game;
 
 import java.awt.Point;
+import static java.lang.Math.pow;
+import static java.lang.Math.sqrt;
 
 public class Constants_singleton {
     
@@ -68,5 +70,10 @@ public class Constants_singleton {
             int new_object = next_object_id;
             next_object_id++;
             return new_object;
+        }
+        
+        public double get_distance_between_objects(GameObject first, GameObject second) {
+            double distance = sqrt(pow((first.getX() + first.getSize_width()/2) - (second.getX() + second.getSize_width()/2), 2.0) + pow((first.getY() + first.getSize_height()/2) - (second.getY() + second.getSize_height()/2), 2.0));
+            return distance;
         }
 }

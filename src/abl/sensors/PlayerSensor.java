@@ -36,4 +36,10 @@ public class PlayerSensor extends SerialSensor {
             }
         }
     }
+    
+    @Override
+    public void senseContinuous(Object[] args) {
+        LinkedList<PlayerWME> player_wme = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
+        player_wme.get(0).getBelief_is_consistent();
+    }
 }
