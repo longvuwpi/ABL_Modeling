@@ -9,12 +9,11 @@ import abl.runtime.DefaultAsyncSensor;
 public abstract class SerialSensor extends DefaultAsyncSensor{
 
 	/** 
-	 * Sense game state.
-	 * 
-     * Note: This is invoked for success tests and context conditions.
+	 * Sense game state.Note: This is invoked for success tests and context conditions.
+	 *
 	 */
     public void senseContinuous(Object[] args) {
-        sense(args);
+        senseContinuous();
     }
 	
     /**
@@ -37,4 +36,6 @@ public abstract class SerialSensor extends DefaultAsyncSensor{
      * Updates working memory with game state.
      */
     protected abstract void sense(); 
+    
+    protected abstract void senseContinuous();
 }

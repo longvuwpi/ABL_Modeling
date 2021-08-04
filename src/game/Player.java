@@ -10,6 +10,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.geom.Ellipse2D;
 import static java.lang.System.currentTimeMillis;
+import java.util.HashMap;
 
 /**
  *
@@ -28,6 +29,10 @@ public class Player extends Character {
     private int vision_diameter;
     private Ellipse2D vision;
     
+    public HashMap<NeutralCreepCamp, Integer> belief;
+    private int last_belief_update_minute = 0;
+    private int last_belief_update_second = 0;
+    
     //initialize values of the player
     public Player(PlayerBase new_base) {
         super(Constants_singleton.getInstance().hero_width, Constants_singleton.getInstance().hero_height, new_base.getX(), new_base.getY());
@@ -43,6 +48,12 @@ public class Player extends Character {
         base = new_base;
         vision_diameter = Constants_singleton.hero_vision_diameter;
         vision = new Ellipse2D.Double(getX() + getSize_width()/2 - vision_diameter/2, getY() + getSize_height()/2 - vision_diameter/2, vision_diameter, vision_diameter);
+        
+        belief = new HashMap<NeutralCreepCamp, Integer>();
+        //for (NeutralCreepCamp camp : Chaser.getInstance().getListOfCamps()) {
+        //    belief.put(camp, 0);
+        //}
+        
         add_to_world();
 
     }
@@ -52,7 +63,7 @@ public class Player extends Character {
         gold += gold_amount;
     }
 
-    // when player dies, he does not get removed
+    // when player dies, he does not get removed from the world
     // but only becomes idle and then respawn in the base
     @Override
     public void die() {
@@ -61,6 +72,11 @@ public class Player extends Character {
         dead_time_marker = currentTimeMillis();
     }
 
+    
+    //each update tick
+    //if the player is dead then the dead time count down is calculated so the player respawn when it is time
+    //if the player is alive then he heals when he is in the base
+    //also update his belief on all the existing creep camps
     @Override
     public void update() {
         super.update();
@@ -82,8 +98,42 @@ public class Player extends Character {
                 }
             }
         }
+        
+        update_belief();
     }
 
+    
+    //update belief about the creep camps
+    //if it is creep spawning time, the player will assume that the camps that were killed before will have 3 creeps
+    //the player will remember the camps that were not killed before and have the same belief about those camps
+    //if the player is having vision of a creep camp, then the belief about that camp is updated with actual values
+        public void update_belief() {
+        int current_time_second = Chaser.getInstance().getElapsed_seconds();
+        int current_time_minute = Chaser.getInstance().getElapsed_minutes();
+
+        if (((current_time_second % Constants_singleton.creep_respawn_time) == 3)
+                && ((current_time_second != last_belief_update_second)
+                || (current_time_minute != last_belief_update_minute))) {
+            for (NeutralCreepCamp camp : belief.keySet()) {
+                if (belief.get(camp) == 0) {
+                    belief.replace(camp, Constants_singleton.creep_health * Constants_singleton.creep_damage * 9);
+                                System.out.println("updated value for camp");
+
+                }
+            }
+            last_belief_update_second = current_time_second;
+            last_belief_update_minute = current_time_minute;
+        }
+
+            for (NeutralCreepCamp camp : belief.keySet()) {
+            if (is_object_in_vision(camp)) {
+                belief.replace(camp, camp.get_estimated_strength());
+            }
+        }
+
+    }
+        
+    //only attacks target when not dead
     @Override
     public boolean NormalAttackAtTarget(Character target) {
         if (!is_dead) {
@@ -93,6 +143,7 @@ public class Player extends Character {
         }
     }
 
+    //spawn in base with max health
     public void spawn() {
         health = max_health;
         is_dead = false;
@@ -102,7 +153,7 @@ public class Player extends Character {
 
     @Override
     public void paintObject(Graphics g) {
-        if (!is_dead) {
+        if (!is_dead) { //if not dead then draw the vision around the player
             Color vision_color = new Color(140, 255, 0, 110);
             g.setColor(vision_color);
             g.fillOval((int)vision.getX(), (int)vision.getY(), vision_diameter, vision_diameter);
@@ -139,7 +190,9 @@ public class Player extends Character {
         return base;
     }
     
+    //check if the object is in the player's vision
     public boolean is_object_in_vision(GameObject game_object) {
-        return vision.intersects(game_object.bounding_box);
+        //return vision.intersects(game_object.bounding_box);
+        return vision.contains(game_object.getX() + game_object.getSize_width()/2, game_object.getY() + game_object.getSize_height()/2);
     }
 }

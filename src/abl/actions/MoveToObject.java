@@ -46,8 +46,7 @@ public class MoveToObject extends BaseAction {
 
     Character to_move = null;
     GameObject destination;
-    MoveToObject the_action;
-
+    MoveToObjectThread execution_thread;
     /**
      * Sets the trajectory of the player to move down.
      */
@@ -63,12 +62,17 @@ public class MoveToObject extends BaseAction {
 
         completionStatus = NOT_COMPLETE;
 
-        MoveToObjectThread new_thread = new MoveToObjectThread(to_move, target, this);
-        new_thread.start();
+        execution_thread = new MoveToObjectThread(to_move, target, this);
+        execution_thread.start();
 //Chaser.getInstance().setPlayerTrajectory(new Point(0,Chaser.ChaserSpeed));
         destination = target;
     }
 
+        @Override
+    public void abort() {
+        execution_thread.running = false;
+    }
+    
     @Override
     public synchronized int getCompletionStatus() {
         //completionStatus = NOT_COMPLETE;

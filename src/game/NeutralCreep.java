@@ -13,9 +13,11 @@ import java.awt.Color;
  */
 public class NeutralCreep extends Character {
 
+    //the camp that this creep is in
     private NeutralCreepCamp camp;
     private int gold_bounty = 0;
 
+    //constructor for a neutral creep
     public NeutralCreep(NeutralCreepCamp camp, double position_x, double position_y) {
         super(Constants_singleton.getInstance().creep_width, Constants_singleton.getInstance().creep_height, position_x, position_y);
 
@@ -30,6 +32,8 @@ public class NeutralCreep extends Character {
         add_to_world();
     }
 
+    //when the creep takes damage, it aggros the other creeps in the same camp
+    //if the creep dies, the player earns gold
     @Override
     public void TakeDamageFrom(Character damage_dealer, int damage) {
         super.TakeDamageFrom(damage_dealer, damage);
@@ -42,28 +46,37 @@ public class NeutralCreep extends Character {
         }
     }
 
+    //stop the creep from attacking
     public void de_aggro() {
         setAggro_unit(null);
     }
 
+    //attack at target
     @Override
     public boolean NormalAttackAtTarget(Character target) {
         if (target == null) {
             return false;
         }
+        
+        //if target is dead then stop attacking
         if (((Player) target).is_dead()) {
             camp.de_aggro();
             return false;
         }
+        
+        //try to fire a bullet at the target
         return super.NormalAttackAtTarget(target);
     }
 
+    //removes self from the world and from the camp
     @Override
     public void remove_from_world() {
         super.remove_from_world();
         camp.remove_creep(this);
     }
 
+    //each update cycle, the creep attacks the target automatically if it is aggroed.
+    //otherwise stop attacking
     @Override
     public void update() {
         super.update();

@@ -36,20 +36,15 @@ public class PlayerWME extends WME {
     private double player_trajectory_dx;
     private double player_trajectory_dy;
 
-    private int creep_object_id;
-    private double creep_location_x;
-    private double creep_location_y;
-    private boolean creep_exists;
-
     private boolean is_in_danger;
 
     private NeutralCreepCamp current_target;
 
     //private ArrayList<AbstractMap.SimpleEntry<NeutralCreepCamp, Integer>> belief;
-    private HashMap<NeutralCreepCamp, Integer> belief;
+    //private HashMap<NeutralCreepCamp, Integer> belief;
     //memory keeping
-    private int last_belief_update_minute;
-    private int last_belief_update_second;
+    //private int last_belief_update_minute = 0;
+    //private int last_belief_update_second = 0;
     private boolean target_in_vision;
 
     /**
@@ -65,10 +60,7 @@ public class PlayerWME extends WME {
         player = Chaser.getInstance().getListOfPlayers().get(0);
         player_object_id = player.getGame_object_id();
         //belief = new ArrayList<AbstractMap.SimpleEntry<NeutralCreepCamp, Integer>>();
-        belief = new HashMap<NeutralCreepCamp, Integer>();
-        for (NeutralCreepCamp camp : Chaser.getInstance().getListOfCamps()) {
-            belief.put(camp, 0);
-        }
+
         updateAndStore();
     }
 
@@ -77,7 +69,7 @@ public class PlayerWME extends WME {
 
         if ((!target_in_vision) && (player.is_object_in_vision(current_target))) {
             target_in_vision = true;
-            belief.replace(current_target, current_target.get_estimated_strength());
+            player.belief.replace(current_target, current_target.get_estimated_strength());
             if (current_target.get_estimated_strength() > player.get_estimated_strength()) {
                 result = false;
             }
@@ -92,9 +84,10 @@ public class PlayerWME extends WME {
 
         int player_strength = player.get_estimated_strength();
 
-        for (NeutralCreepCamp camp : belief.keySet()) {
+        for (NeutralCreepCamp camp : player.belief.keySet()) {
+            int believed_strength = player.belief.get(camp);
             double distance = Constants_singleton.getInstance().get_distance_between_objects(player, camp);
-            if ((distance <= min_distance) && (belief.get(camp) <= player_strength)) {
+            if ((distance <= min_distance) && (believed_strength <= player_strength) && (believed_strength > 0)) {
                 min_distance = distance;
                 closest_camp = camp;
             }
@@ -104,30 +97,23 @@ public class PlayerWME extends WME {
         if (closest_camp == null) {
             current_target = null;
             target_in_vision = false;
+            System.out.println("Camp not found");
             return -1;
         } else {
             current_target = closest_camp;
             target_in_vision = false;
+            System.out.println("Camp found");
+
             return closest_camp.getGame_object_id();
         }
     }
 
-    public void update_belief() {
-        int current_time_second = Chaser.getInstance().getElapsed_seconds();
-        int current_time_minute = Chaser.getInstance().getElapsed_minutes();
-
-        if (((current_time_second % Constants_singleton.creep_respawn_time) == 3)
-                && ((current_time_second != last_belief_update_second)
-                || (current_time_minute != last_belief_update_minute))) {
-            for (NeutralCreepCamp camp : belief.keySet()) {
-                if (belief.get(camp) == 0) {
-                    belief.replace(camp, 750 * 8);
-                }
-            }
-            last_belief_update_second = current_time_second;
-            last_belief_update_minute = current_time_minute;
+    public int getTarget_camp_id() {
+        if (current_target == null) {
+            return -1;
+        } else {
+            return current_target.getGame_object_id();
         }
-
     }
 
     public boolean getIsInBaitLocation() {
@@ -165,22 +151,6 @@ public class PlayerWME extends WME {
         return player_trajectory_dy;
     }
 
-    public double getCreep_location_x() {
-        return creep_location_x;
-    }
-
-    public double getCreep_location_y() {
-        return creep_location_y;
-    }
-
-    public boolean getCreep_exists() {
-        return creep_exists;
-    }
-
-    public int getCreep_object_id() {
-        return creep_object_id;
-    }
-
     public boolean getIs_in_danger() {
         is_in_danger = (player.getHealth() <= (player.getMaxHealth() * 25 / 100));
 
@@ -200,8 +170,11 @@ public class PlayerWME extends WME {
         }
 
         return player.is_object_in_attack_range(creep);*/
-        if (current_target == null) return false;
-        else return (player.is_object_in_attack_range(current_target) && current_target.getHas_alive_creeps());
+        if (current_target == null) {
+            return false;
+        } else {
+            return (player.is_object_in_attack_range(current_target) && current_target.getHas_alive_creeps());
+        }
     }
 
     public void select_camp() {
@@ -217,7 +190,7 @@ public class PlayerWME extends WME {
     }
 
     public void updateAndStore() {
-        Character player = Chaser.getInstance().getListOfPlayers().get(0);
+        /*Character player = Chaser.getInstance().getListOfPlayers().get(0);
 
         player_location_x = player.getX();
         player_location_y = player.getY();
@@ -245,13 +218,13 @@ public class PlayerWME extends WME {
 
             creep = closest_camp.getCreeps().get(0);
 
-            creep_location_x = creep.getX();
-            creep_location_y = creep.getY();
-            creep_exists = true;
-            creep_object_id = creep.getGame_object_id();
+            //creep_location_x = creep.getX();
+            //creep_location_y = creep.getY();
+            //creep_exists = true;
+            //creep_object_id = creep.getGame_object_id();
         } else {
-            creep_exists = false;
-            creep_object_id = -1;
-        }
+            //creep_exists = false;
+            //creep_object_id = -1;
+        }*/
     }
 }

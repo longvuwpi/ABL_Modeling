@@ -54,7 +54,7 @@ public class GameObject {
     protected double speed = 10.0;
 
     /**
-     * Creates a bullet that will move towards the target location.
+     * Creates a new game object
      */
     public GameObject(double new_width, double new_height, double new_x, double new_y, double new_dx, double new_dy, double new_speed, boolean new_idle, Color new_color) {
         x = new_x;
@@ -77,18 +77,20 @@ public class GameObject {
         //add_to_world();
     }
 
+    //add itself to the game world
     public void add_to_world() {
         Chaser.getInstance().queue_addObject(this);
         //Chaser.getInstance().addObject(this);
     }
 
+    //remove itself from the game world
     public void remove_from_world() {
         Chaser.getInstance().queue_removeObject(this);
         //Chaser.getInstance().removeObject(this);
     }
 
     /**
-     * Updates the position of the bullet;
+     * Updates the position if moving
      */
     public void update() {
         if (!idle) {
@@ -99,13 +101,14 @@ public class GameObject {
         //System.out.println("Updateing object " + game_object_id + "at " + x + "," + y + "size " + size_width + "," + size_height);                               
     }
 
+    //paint self
     public void paintObject(Graphics g) {
         g.setColor(color);
         g.fillRect((int) x, (int) y, (int) size_width, (int) size_height);
     }
 
     /**
-     * Is the bullet motionless?
+     * Is the object motionless?
      */
     public boolean isIdle() {
         return idle;
@@ -195,9 +198,10 @@ public class GameObject {
         this.speed = speed;
     }
     
+    //set self to head to the specified point
     public void set_target(double target_x, double target_y) {
-        double to_target_x = target_x - x;
-        double to_target_y = target_y - y;
+        double to_target_x = target_x - (x + (getSize_width()/2));
+        double to_target_y = target_y - (y + (getSize_height()/2));
         double to_target_distance = Math.sqrt((to_target_x * to_target_x) + (to_target_y * to_target_y));
         double ratio = speed / to_target_distance;
         double newdx = ratio * to_target_x;
@@ -209,6 +213,7 @@ public class GameObject {
         
     }
     
+    //set self to head towards the target object
     public void set_target(GameObject target) {
         set_target(target.getX() + (target.getSize_width() / 2), target.getY() + (target.getSize_height()/2));
     }

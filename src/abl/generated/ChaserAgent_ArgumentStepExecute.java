@@ -20,26 +20,26 @@ public class ChaserAgent_ArgumentStepExecute {
             args[1] = new Integer(((__ValueTypes.IntVar)__$behaviorFrame[0]).i);
             return args;
          }
-         case 6: {
+         case 5: {
             // creep_fire_1Step2
             final Object[] args = new Object[1];
             args[0] = new Integer(100);
             return args;
          }
-         case 11: {
+         case 10: {
             // move_1Step2
             final Object[] args = new Object[2];
-            args[0] = new Integer(((__ValueTypes.IntVar)__$behaviorFrame[2]).i);
-            args[1] = new Integer(((__ValueTypes.IntVar)__$behaviorFrame[1]).i);
+            args[0] = new Integer(((__ValueTypes.IntVar)__$behaviorFrame[1]).i);
+            args[1] = new Integer(((__ValueTypes.IntVar)__$behaviorFrame[0]).i);
             return args;
          }
-         case 13: {
+         case 12: {
             // move_2Step2
             final Object[] args = new Object[1];
-            args[0] = new Integer(50);
+            args[0] = new Integer(((__ValueTypes.IntVar)__$behaviorFrame[1]).i);
             return args;
          }
-         case 15: {
+         case 14: {
             // seek_safety_1Step2
             final Object[] args = new Object[1];
             args[0] = new Integer(((__ValueTypes.IntVar)__$behaviorFrame[1]).i);

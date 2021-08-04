@@ -71,7 +71,7 @@ behaving_entity ChaserAgent {
 
                 precondition {
                     (PlayerWME isInRangeOfCreep::creepInRange)
-                    (PlayerWME creep_object_id::creepID)
+                    (PlayerWME target_camp_id::campID)
                     (PlayerWME player_object_id::playerID)
                     (creepInRange == true) 
                 }
@@ -87,7 +87,7 @@ behaving_entity ChaserAgent {
 			System.out.println("Firing");
 		}
 
-		act fire(playerID,creepID);	
+		act fire(playerID,campID);	
 		//subgoal Wait(500);
 	}
 
@@ -100,18 +100,6 @@ behaving_entity ChaserAgent {
 
                 mental_act {
                     System.out.println("Creep not in range, not firing");
-                }
-        }
-
-        sequential behavior fire() {
-                precondition {
-                    (PlayerWME creep_exists::creepExists)
-                    (creepExists == false) 
-                }
-                specificity 2;
-
-                mental_act {
-                    System.out.println("Creep does not exist, not firing");
                 }
         }
 
@@ -154,44 +142,39 @@ behaving_entity ChaserAgent {
 
 	sequential behavior move() {
 		precondition {
-                    (PlayerWME isInRangeOfCreep::creepInRange)
-                    (PlayerWME creep_exists::creepExists)
+                    (PlayerWME selected_camp::targetCamp)
                     (PlayerWME player_object_id::playerID)
-                    (PlayerWME creep_object_id::creepID)
-                    (creepExists == true) 
-                    (creepInRange == false)
+                    (targetCamp != -1)
 		}
 		specificity 3;
 		
+                context_condition {
+                    (PlayerWME belief_is_consistent::beliefIsConsistent)
+                    (beliefIsConsistent == true)
+                }
+
 		mental_act {
-			System.out.println("Moving to creep");
+			System.out.println("Moving to creep " + Integer.toString(targetCamp));
 		}
  
-		act move_to_object(playerID, creepID);
+		act move_to_object(playerID, targetCamp);
 	}
 
         sequential behavior move() {
-            specificity 2;
+		precondition {
+                    (PlayerWME selected_camp::targetCamp)
+                    (PlayerWME player_object_id::playerID)
+                    (targetCamp == -1)
+		}            
+                
+                specificity 2;
 		
             mental_act {
-			System.out.println("I'm not actually moving");
+			System.out.println("I can't farm any camp");
             }
 
-            subgoal Wait(50);
+            act go_to_base(playerID);
         }
-
-        /*sequential behavior move() {
-
-		precondition {
-                    (PlayerWME player_object_id::playerID)
-		}
-
-                mental_act {
-                    System.out.println("Creep does not exist or is already in range, not moving");
-                }
-
-                act stop(playerID);
-        }*/
 	
 
         sequential behavior seek_safety() {

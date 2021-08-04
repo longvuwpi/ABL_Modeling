@@ -36,4 +36,9 @@ public class CreepSensor extends SerialSensor {
             }
         }
     }
+    
+    @Override
+    public void senseContinuous() {
+        sense();
+    }
 }

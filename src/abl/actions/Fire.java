@@ -3,6 +3,7 @@ package abl.actions;
 import game.Chaser;
 import game.Character;
 import game.GameObject;
+import game.NeutralCreepCamp;
 
 import java.awt.Point;
 
@@ -15,11 +16,11 @@ import java.awt.Point;
 class FireThread extends Thread {
 
     Character to_fire;
-    Character target;
+    NeutralCreepCamp target;
     Fire the_action;
     protected volatile boolean running = false;
     
-    FireThread(Character tofire, Character tar, Fire theaction) {
+    FireThread(Character tofire, NeutralCreepCamp tar, Fire theaction) {
         to_fire = tofire;
         target = tar;
         the_action = theaction;
@@ -28,16 +29,20 @@ class FireThread extends Thread {
 
     public void run() {
         boolean success = false;
+        if (!target.getHas_alive_creeps()) running = false;
         while (running) {
-            to_fire.NormalAttackAtTarget(target);
+            if (target.getHas_alive_creeps())
+            {
+                to_fire.NormalAttackAtTarget(target.getCreeps().get(0));
+            }
             //System.out.println("Im still trying to shoot over here");
-            if (target.getHealth() <= 0) {
+            else {
                 running = false;
                 success = true;
             }
         }
 
-        success = target.getHealth() <= 0;
+        success = target.getHas_alive_creeps();
         the_action.set_complete(success);
 
     }
@@ -58,7 +63,7 @@ public class Fire extends BaseAction {
             return;
         }
         Character attacker = (Character) Chaser.getInstance().get_game_object_with_id((Integer) args[0]);
-        Character target = (Character) Chaser.getInstance().get_game_object_with_id((Integer) args[1]);
+        NeutralCreepCamp target = (NeutralCreepCamp) Chaser.getInstance().get_game_object_with_id((Integer) args[1]);
         if ((attacker == null) || (target == null)) {
             return;
         }

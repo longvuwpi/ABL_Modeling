@@ -20,14 +20,19 @@ enum CharacterType {
 public class Character extends GameObject {
 
     private boolean is_taking_dmg;
+    
+    //The unit that is attacking this unit
     private Character aggro_unit = null;
 
+    //When attacked, the unit turn red for 3 ticks
     private int countdown_taking_dmg;
     private int countdown_taking_dmg_total = 3;
 
+    //When attacking, the unit can only fire once every 10 ticks
     private int countdown_attack_total = 10;
     private int countdown_attack = 0;
 
+    //different units have different attack ranges
     private double attack_range = 0;
 
     int health = 0;
@@ -35,10 +40,7 @@ public class Character extends GameObject {
     int damage = 0;
 
     /**
-     * bullet speed
-     */
-    /**
-     * Creates a bullet that will move towards the target location.
+     * Create a character
      */
     public Character(double width, double height, double location_x, double location_y) {
         super(width, height, location_x, location_y, 0, 0, 0, true, Color.BLACK);
@@ -50,6 +52,7 @@ public class Character extends GameObject {
     @Override
     public void update() {
         super.update();
+        //each tick, set attack cd and taking dmg cd
         if (countdown_attack > 0) {
             countdown_attack--;
         }
@@ -61,13 +64,19 @@ public class Character extends GameObject {
         //}
     }
 
+    //How each character paints itself
     @Override
     public void paintObject(Graphics g) {
+        //paint the body
         super.paintObject(g);
+        
+        //turns red if being attacked 
         if (countdown_taking_dmg > 0) {
             g.setColor(Color.RED);
             g.fillRect((int) x, (int) y, (int) size_width, (int) size_height);
         }
+        
+        //draw health
         String health_todraw = Integer.toString(health);
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
@@ -95,7 +104,7 @@ public class Character extends GameObject {
     }
 
     public boolean NormalAttackAtTarget(Character target) {
-        if (countdown_attack == 0) {
+        if (countdown_attack == 0) { //if it's time to attack, fire a bullet at the target
             Bullet bullet = new Bullet(this, target);
             bullet.setDamage(damage);
             countdown_attack = countdown_attack_total;
@@ -103,13 +112,17 @@ public class Character extends GameObject {
         } else return false;
     }
 
-    public void DealDamageTo(Character target) {
+    public void DealDamageTo(Character target) { //deal damage to target
         target.TakeDamageFrom(this, damage);
     }
 
-    public void TakeDamageFrom(Character damage_dealer, int damage) {
+    public void TakeDamageFrom(Character damage_dealer, int damage) { //take damage from the damage dealer
+        //decrease health
         health -= damage;
+        //set taking dmg cd
         countdown_taking_dmg = countdown_taking_dmg_total;
+        
+        //set the unit that is attacking self
         if (aggro_unit == null) {
             is_taking_dmg = true;
             aggro_unit = damage_dealer;
@@ -120,11 +133,14 @@ public class Character extends GameObject {
         //    setDy(3);
         //}
         setIdle(false);
+        
+        //if health falls below 0 then die
         if (health <= 0) {
             die();
         }
     }
 
+    //if dead, remove self from the world (for creep only)
     public void die() {
         remove_from_world();
     }
@@ -141,6 +157,7 @@ public class Character extends GameObject {
         attack_range = range;
     }
 
+    //Check if the object is in attack range
     public boolean is_object_in_attack_range(GameObject the_object) {
         double distance = Constants_singleton.getInstance().get_distance_between_objects(this, the_object);
         return (distance <= attack_range);

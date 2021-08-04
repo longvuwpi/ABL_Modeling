@@ -16,7 +16,7 @@ import java.awt.Color;
 public class PlayerBase extends GameObject {
     public PlayerBase() {
         // initialize
-        super(120,120,Constants_singleton.base_location.x, Constants_singleton.base_location.y,0,0,0,true,Color.GRAY);
+        super(240,240,Constants_singleton.base_location.x, Constants_singleton.base_location.y,0,0,0,true,Color.GRAY);
         add_to_world();
     }
     

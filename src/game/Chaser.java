@@ -40,22 +40,28 @@ public class Chaser extends JPanel implements KeyListener {
      */
     private static Chaser chaser;
 
-    /**
-     * bullets which have been fired by both players
-     */
+    //keeps track of bullets
     private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
 
+    //keeps track of all game objects in the game, each associated with its own unique object id number
     private HashMap<Integer, GameObject> gameObjects = new HashMap<Integer, GameObject>();
+    
+    //distinguish between different objects. environmental objects like creep camps or base is layer 0, players and creeps are layer 1
+    //the game world is drawn from lowest to highest layers, so that players and creeps are drawn on top of the environment
     private HashMap<Integer, ArrayList<GameObject>> layers = new HashMap<Integer, ArrayList<GameObject>>();
-
-    //private ArrayList<GameObject> gameObjects = new ArrayList<GameObject>();
+    
+    //keeps track of different kinds of object in the game world
     private ArrayList<Player> players = new ArrayList<Player>();
     private ArrayList<NeutralCreep> creeps = new ArrayList<NeutralCreep>();
     private ArrayList<NeutralCreepCamp> camps = new ArrayList<NeutralCreepCamp>();
     
+    //keeps track of objects that are newly created to add to the correct collection
     private ConcurrentLinkedQueue<GameObject> queue_add = new ConcurrentLinkedQueue<GameObject>();
+    
+    //keeps track of objects that should be removed from the game world
     private ConcurrentLinkedQueue<GameObject> queue_remove = new ConcurrentLinkedQueue<GameObject>();
 
+    //for the calculation of the current time in the game
     long start_time_millis;
     int elapsed_minutes;
     int elapsed_seconds;
@@ -108,39 +114,62 @@ public class Chaser extends JPanel implements KeyListener {
      * Note: this method does not return, the ABL agent decision cycle claims
      * the thread.
      */
-    public void startAgent() {
-        //GameObject base = new GameObject(120,120,Constants_singleton.base_location.x, Constants_singleton.base_location.y,0,0,0,true,Color.GRAY);
-        //base.add_to_world();
+    public void startAgent() {        
+        //initialize two layers
+        //layer 0 for environmental objects
+        //layer 1 for actionable objects such as creeps, players, bullets
         ArrayList<GameObject> layer_0 = new ArrayList<GameObject>();
         ArrayList<GameObject> layer_1 = new ArrayList<GameObject>();
         layers.put(0, layer_0);
         layers.put(1, layer_1);
         
+        //initialize player base
         PlayerBase base = new PlayerBase();
-        NeutralCreepCamp creep_camp = new NeutralCreepCamp(100, 100, 60, 400);
-        NeutralCreepCamp creep_camp2 = new NeutralCreepCamp(100, 100, 1000, 650);
-
+        
+        //initialize 3 creep camps
+        NeutralCreepCamp creep_camp = new NeutralCreepCamp(150, 150, 250, 350);
+        NeutralCreepCamp creep_camp2 = new NeutralCreepCamp(150, 150, 1100, 750);
+        NeutralCreepCamp creep_camp3 = new NeutralCreepCamp(150,150, 600, 650);
+        
+        //initialize 1 player
         Player player = new Player(base);
         //Character creep = new Character(Constants_singleton.getInstance().creep_width, Constants_singleton.getInstance().creep_height,creep_camp.getX(), creep_camp.getY(), CharacterType.CREEP);
+        
+        //put creep camps in the player's belief system
+        player.belief.put(creep_camp, 0);
+        player.belief.put(creep_camp2, 0);
+        player.belief.put(creep_camp3, 0);
 
+        
         System.out.println("hero id is " + player.getGame_object_id());
         //System.out.println("creep id is " + creep.getGame_object_id());
+        
+        //add all initial objects to the game world
         add_objects_in_queue();
+        
+        //mark the start time of the game
         start_time_millis = currentTimeMillis();
+        
+        //start the ABL behaviors
         ChaserAgent agent = new ChaserAgent();
         agent.startBehaving();
 
     }
 
+    //queue up new object to be added to the game world
     public void queue_addObject(GameObject new_object) {
         if (new_object == null) System.out.println("something weird is happening");
+        //add the object to the queue
         queue_add.add(new_object);
     }
 
+    //queue up an object to be removed from the game world
     public void queue_removeObject(GameObject new_object) {
+        //add the object to the queue
         queue_remove.add(new_object);
     }
 
+    //each update cycle, all new objects are added to the game world
     private void add_objects_in_queue() {
         while (!queue_add.isEmpty()) {
             GameObject current = queue_add.poll();
@@ -149,6 +178,7 @@ public class Chaser extends JPanel implements KeyListener {
         
     }
 
+    //each update cycle, all objects that should be removed from the game world will be removed (such as a bullet that already hit its target)
     private void remove_objects_in_queue() {
         while (!queue_remove.isEmpty()) {
             GameObject current = queue_remove.poll();
@@ -157,11 +187,13 @@ public class Chaser extends JPanel implements KeyListener {
         
     }
 
+    //Add 1 object to the game world
     public void addObject(GameObject new_object) {
         //gameObjects.add(new_object);
         gameObjects.put(new_object.getGame_object_id(), new_object);
         layers.get(new_object.get_layer()).add(new_object);
         
+        //Add the object to the corresponding collection for book keeping
         if (new_object instanceof Bullet) {
             bullets.add((Bullet) new_object);
         }
@@ -176,11 +208,12 @@ public class Chaser extends JPanel implements KeyListener {
         }
     }
 
+    //Remove 1 object from the game world
     public void removeObject(GameObject object_to_remove) {
         gameObjects.remove(object_to_remove.getGame_object_id());
         layers.get(object_to_remove.get_layer()).remove(object_to_remove);
         
-        //gameObjects.remove(object_to_remove);
+        //Remove the object from the corresponding collection
         if (object_to_remove instanceof Bullet) {
             bullets.remove((Bullet) object_to_remove);
         }
@@ -192,89 +225,71 @@ public class Chaser extends JPanel implements KeyListener {
         }
     }
 
-    //public ArrayList<GameObject> getGameObjects() {
-    //    return gameObjects;
-    //}
+    //return the object with the correct object ID
     public GameObject get_game_object_with_id(int the_id) {
         return gameObjects.get(the_id);
     }
 
+    //return list of all players
     public ArrayList<Player> getListOfPlayers() {
         return players;
     }
-
+   
+    //return list of all creeps
     public ArrayList<NeutralCreep> getListOfCreeps() {
         return creeps;
     }
 
+    //return list of all creep camps
     public ArrayList<NeutralCreepCamp> getListOfCamps() {
         return camps;
     }
 
-    /**
-     * Updates the positions of objects, and draws the scene.
-     */
-    public void drawLanePosition(Graphics g) {
-        //g.setColor(Color.cyan);
-        //g.fillRect(laneStart_x, laneStart_y, laneLength_x, laneLength_y);
-        //g.setColor(Color.GREEN);
-        //g.fillRect(laneStart_x, laneStart_y, baitInitialPositionLength, laneLength_y);
-        //g.setColor(Color.ORANGE);
-        //g.fillRect(laneStart_x + laneLength_x - gankPositionLength, laneStart_y, gankPositionLength, laneLength_y);
-    }
-
+    //Each update cycle
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        //drawLanePosition(g);
 
-        updateWorld(g);
+        //First, let all objects in the world update
+        updateWorld();
 
+        //Add all new objects to the game world
         add_objects_in_queue();
+        
+        //Remove objects that need to be removed from the game world
         remove_objects_in_queue();
+        
+        //Paint all objects in the world
         paintWorld(g);
-//		if(playerLocation.x > laneStart_x && playerLocation.x < (laneStart_x + baitInitialPositionLength)
-//				&& playerLocation.y > laneStart_y && playerLocation.y < (laneStart_y + laneLength_y)) {
-//					System.out.println("Target in bait initial position");
-//				}
-//		else{
-//			System.out.println("not in position");
-//		}
-
-        // draw lane
-        //g.setColor(Color.BLUE);
-        //g.fillRect(playerLocation.x, playerLocation.y, playerSize, playerSize);
-        //g.setColor(Color.RED);
-        //g.fillRect(chaserLocation.x, chaserLocation.y, playerSize, playerSize);
-        //g.setColor(Color.BLACK);
-        //g.fillRect(baitPoint.x, baitPoint.y, playerSize/4, playerSize/4);
-        //g.setColor(Color.BLACK);
-        //for (Bullet bullet : bullets) {
-        //	g.fillRect(bullet.getX() + (playerSize - bulletSize)/2, bullet.getY() + (playerSize - bulletSize)/2, bulletSize, bulletSize);
-        //}
     }
 
-    public void updateWorld(Graphics g) {
+    //Tell each object in the world to update itself
+    public void updateWorld() {
         for (GameObject object : gameObjects.values()) {
             object.update();
             //object.paintObject(g);
         }
     }
 
+    //Paint the world
     public void paintWorld(Graphics g) {
         
+        //paint environmental objects first
         for (GameObject object : layers.get(0)) {
             object.paintObject(g);
         }
         
+        //paint other objects next
         for (GameObject object : layers.get(1)) {
             object.paintObject(g);
         }
 
+        //Calculate the elapsed time
         long elapsed_time = currentTimeMillis() - start_time_millis;
         elapsed_minutes = (int) (elapsed_time / 60000);
         elapsed_seconds = (int) (elapsed_time / 1000) - (elapsed_minutes * 60);
 
+        //Draw the time on the top of the screen
         String time_todraw = Integer.toString(elapsed_minutes) + ":" + Integer.toString(elapsed_seconds);
         g.setColor(Color.BLACK);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
@@ -289,6 +304,10 @@ public class Chaser extends JPanel implements KeyListener {
         return elapsed_seconds;
     }
 
+    
+    
+    //****************************************************************//
+    //UNUSED OLD CODE, SHOULD REMOVE
     /**
      * Returns the location of the player.
      */

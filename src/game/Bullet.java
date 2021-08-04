@@ -16,14 +16,11 @@ public class Bullet extends GameObject {
     private Character target;
     private double damage;
 
-    /**
-     * bullet speed
-     */
     public double BulletSpeed = 16.0;
     public static double bullet_size = 4;
 
     /**
-     * Creates a bullet that will move towards the target location.
+     * Creates a bullet that belongs to the shooter and will move towards the target location.
      */
     public Bullet(Character new_owner, Character new_target) {
         super(bullet_size, bullet_size, 0, 0, 0, 0, 0, false, Color.BLACK);
@@ -40,8 +37,9 @@ public class Bullet extends GameObject {
         add_to_world();
     }
 
+    //update the direction of the bullet to head towards the target
     public void updatePathing() {
-        if (target.getHealth() > 0) {
+        if (target.getHealth() > 0) { //if the target is alive then head towards the target
 
             dx = target.x + (target.getSize_width() / 2) - getX();
             dy = target.y + (target.getSize_height() / 2) - getY();
@@ -54,7 +52,8 @@ public class Bullet extends GameObject {
             } else {
                 idle = true;
             }
-        } else {
+        } else //if the target is not alive, then just disappear
+        {
             remove_from_world();
         }
     }
@@ -63,9 +62,12 @@ public class Bullet extends GameObject {
         this.damage = damage;
     }
 
+    //For each update cycle
     @Override
     public void update() {
         super.update();
+        
+        //if the target is alive and the bullet touches the target, it deals damage then disappear
         if (target.getHealth() > 0) {
             if (getBounding_box().intersects(target.getBounding_box()) && (target.getHealth() > 0)) {
                 owner.DealDamageTo(target);
@@ -73,18 +75,17 @@ public class Bullet extends GameObject {
             }
         }
 
+        //if the bullet gets out of the screen then it is deleted
         if ((getX() < 0) || (getX() > Constants_singleton.getInstance().width)
                 || (getY() < 0) || (getY() > Constants_singleton.getInstance().height)) {
             remove_from_world();
         }
 
-        //owner = (Character) Chaser.getInstance().get_game_object_with_id(owner.getGame_object_id());
-        //target = (Character) Chaser.getInstance().get_game_object_with_id(target.getGame_object_id());
         updatePathing();
         
     }
     
-    @Override
+    /*@Override
     public void paintObject(Graphics g) {
         super.paintObject(g);
         
@@ -92,6 +93,6 @@ public class Bullet extends GameObject {
         g.setFont(new Font("TimesRoman", Font.PLAIN, 20));
         String todraw = (owner instanceof Player) ? "pl" : "cr";
         g.drawString(todraw, (int) getX(), (int) getY());
-    }
+    }*/
 
 }

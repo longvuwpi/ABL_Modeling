@@ -42,6 +42,35 @@ public class ChaserAgent_ContextConditions {
 
             return false;
          }
+         case 6: {
+            // move_1
+               List wmeList0;
+               ListIterator wmeIter0;
+               wmeList0 = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
+               wmeIter0 = wmeList0.listIterator();
+               while(wmeIter0.hasNext()) {
+                  PlayerWME wme__0 = (PlayerWME)wmeIter0.next();
+                  if (
+                     BehavingEntity.constantTrue(((__ValueTypes.BooleanVar)__$behaviorFrame[2]).b = wme__0.getBelief_is_consistent())
+                  )
+
+                  {
+                        if (
+                           ((__ValueTypes.BooleanVar)__$behaviorFrame[2]).b == true
+                        )
+
+                        {
+                           return true;
+                        }
+
+
+                  }
+
+               }
+
+
+            return false;
+         }
       default:
          throw new AblRuntimeError("Unexpected behaviorID " + __$behaviorID);
       }

@@ -31,7 +31,7 @@ public class ChaserAgent_PreconditionSensorFactories {
          }
          case 3: {
                SensorActivation[] __$activationArray = {
-                  new SensorActivation(new PlayerSensor(), null)
+                  new SensorActivation(new CreepSensor(), null)
                };
 
                return __$activationArray;
@@ -45,9 +45,9 @@ public class ChaserAgent_PreconditionSensorFactories {
                return __$activationArray;
 
          }
-         case 5: {
+         case 6: {
                SensorActivation[] __$activationArray = {
-                  new SensorActivation(new CreepSensor(), null)
+                  new SensorActivation(new PlayerSensor(), null)
                };
 
                return __$activationArray;
@@ -61,7 +61,7 @@ public class ChaserAgent_PreconditionSensorFactories {
                return __$activationArray;
 
          }
-         case 9: {
+         case 8: {
                SensorActivation[] __$activationArray = {
                   new SensorActivation(new PlayerSensor(), null)
                };

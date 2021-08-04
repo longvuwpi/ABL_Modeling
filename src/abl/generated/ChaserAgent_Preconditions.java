@@ -15,7 +15,7 @@ public class ChaserAgent_Preconditions {
       switch (__$behaviorID) {
          case 1: {
             // fire_1
-            int creepID;
+            int campID;
             int playerID;
             boolean creepInRange;
                List wmeList0;
@@ -36,7 +36,7 @@ public class ChaserAgent_Preconditions {
                         while(wmeIter1.hasNext()) {
                            PlayerWME wme__1 = (PlayerWME)wmeIter1.next();
                            if (
-                              BehavingEntity.constantTrue(creepID = wme__1.getCreep_object_id())
+                              BehavingEntity.constantTrue(campID = wme__1.getTarget_camp_id())
                            )
 
                            {
@@ -57,7 +57,7 @@ public class ChaserAgent_Preconditions {
 
                                           {
                                              __$variableTable.put("creepInRange", new Boolean(creepInRange));
-                                             __$variableTable.put("creepID", new Integer(creepID));
+                                             __$variableTable.put("campID", new Integer(campID));
                                              __$variableTable.put("playerID", new Integer(playerID));
                                              return true;
                                           }
@@ -112,37 +112,6 @@ public class ChaserAgent_Preconditions {
             return false;
          }
          case 3: {
-            // fire_3
-            boolean creepExists;
-               List wmeList0;
-               ListIterator wmeIter0;
-               wmeList0 = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
-               wmeIter0 = wmeList0.listIterator();
-               while(wmeIter0.hasNext()) {
-                  PlayerWME wme__0 = (PlayerWME)wmeIter0.next();
-                  if (
-                     BehavingEntity.constantTrue(creepExists = wme__0.getCreep_exists())
-                  )
-
-                  {
-                        if (
-                           creepExists == false
-                        )
-
-                        {
-                           __$variableTable.put("creepExists", new Boolean(creepExists));
-                           return true;
-                        }
-
-
-                  }
-
-               }
-
-
-            return false;
-         }
-         case 4: {
             // creep_fire_1
             boolean creep_aggroed;
                List wmeList0;
@@ -173,7 +142,7 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 5: {
+         case 4: {
             // creep_fire_2
             boolean creep_aggroed;
                List wmeList0;
@@ -204,12 +173,10 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 7: {
+         case 6: {
             // move_1
-            boolean creepExists;
-            int creepID;
+            int targetCamp;
             int playerID;
-            boolean creepInRange;
                List wmeList0;
                ListIterator wmeIter0;
                wmeList0 = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
@@ -217,7 +184,7 @@ public class ChaserAgent_Preconditions {
                while(wmeIter0.hasNext()) {
                   PlayerWME wme__0 = (PlayerWME)wmeIter0.next();
                   if (
-                     BehavingEntity.constantTrue(creepInRange = wme__0.getIsInRangeOfCreep())
+                     BehavingEntity.constantTrue(targetCamp = wme__0.getSelected_camp())
                   )
 
                   {
@@ -228,60 +195,18 @@ public class ChaserAgent_Preconditions {
                         while(wmeIter1.hasNext()) {
                            PlayerWME wme__1 = (PlayerWME)wmeIter1.next();
                            if (
-                              BehavingEntity.constantTrue(creepExists = wme__1.getCreep_exists())
+                              BehavingEntity.constantTrue(playerID = wme__1.getPlayer_object_id())
                            )
 
                            {
-                                 List wmeList2;
-                                 ListIterator wmeIter2;
-                                 wmeList2 = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
-                                 wmeIter2 = wmeList2.listIterator();
-                                 while(wmeIter2.hasNext()) {
-                                    PlayerWME wme__2 = (PlayerWME)wmeIter2.next();
-                                    if (
-                                       BehavingEntity.constantTrue(playerID = wme__2.getPlayer_object_id())
-                                    )
+                                 if (
+                                    targetCamp != -1
+                                 )
 
-                                    {
-                                          List wmeList3;
-                                          ListIterator wmeIter3;
-                                          wmeList3 = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
-                                          wmeIter3 = wmeList3.listIterator();
-                                          while(wmeIter3.hasNext()) {
-                                             PlayerWME wme__3 = (PlayerWME)wmeIter3.next();
-                                             if (
-                                                BehavingEntity.constantTrue(creepID = wme__3.getCreep_object_id())
-                                             )
-
-                                             {
-                                                   if (
-                                                      creepExists == true
-                                                   )
-
-                                                   {
-                                                         if (
-                                                            creepInRange == false
-                                                         )
-
-                                                         {
-                                                            __$variableTable.put("creepInRange", new Boolean(creepInRange));
-                                                            __$variableTable.put("creepID", new Integer(creepID));
-                                                            __$variableTable.put("creepExists", new Boolean(creepExists));
-                                                            __$variableTable.put("playerID", new Integer(playerID));
-                                                            return true;
-                                                         }
-
-
-                                                   }
-
-
-                                             }
-
-                                          }
-
-
-                                    }
-
+                                 {
+                                    __$variableTable.put("targetCamp", new Integer(targetCamp));
+                                    __$variableTable.put("playerID", new Integer(playerID));
+                                    return true;
                                  }
 
 
@@ -297,7 +222,56 @@ public class ChaserAgent_Preconditions {
 
             return false;
          }
-         case 9: {
+         case 7: {
+            // move_2
+            int targetCamp;
+            int playerID;
+               List wmeList0;
+               ListIterator wmeIter0;
+               wmeList0 = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
+               wmeIter0 = wmeList0.listIterator();
+               while(wmeIter0.hasNext()) {
+                  PlayerWME wme__0 = (PlayerWME)wmeIter0.next();
+                  if (
+                     BehavingEntity.constantTrue(targetCamp = wme__0.getSelected_camp())
+                  )
+
+                  {
+                        List wmeList1;
+                        ListIterator wmeIter1;
+                        wmeList1 = BehavingEntity.getBehavingEntity().lookupWME("PlayerWME");
+                        wmeIter1 = wmeList1.listIterator();
+                        while(wmeIter1.hasNext()) {
+                           PlayerWME wme__1 = (PlayerWME)wmeIter1.next();
+                           if (
+                              BehavingEntity.constantTrue(playerID = wme__1.getPlayer_object_id())
+                           )
+
+                           {
+                                 if (
+                                    targetCamp == -1
+                                 )
+
+                                 {
+                                    __$variableTable.put("targetCamp", new Integer(targetCamp));
+                                    __$variableTable.put("playerID", new Integer(playerID));
+                                    return true;
+                                 }
+
+
+                           }
+
+                        }
+
+
+                  }
+
+               }
+
+
+            return false;
+         }
+         case 8: {
             // seek_safety_1
             boolean playerInDanger;
             int playerID;
